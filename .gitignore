@@ -1,0 +1,6 @@
+# Ignore all distribution files
+ara.opensciencegrid.org/*/*
+
+# Don't ignore static distribution files
+!ara.opensciencegrid.org/*/setup.sh
+
