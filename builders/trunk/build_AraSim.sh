@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build script for AraRoot
+# Build script for AraSim
 
 
 usage() {
@@ -10,8 +10,9 @@ usage() {
         echo "  -b, --build destination         set the build destination directory"
 	echo "  -r, --root destination          location of the root build directory"
 	echo "  -v, --version version           version to be installed"
-        echo "  --skip_download                 AraRoot exists pre-downloaded at the source destination"
-        echo "  --skip_build                    AraRoot has already been built at the build destination"
+        echo "  --skip_download                 AraSim exists pre-downloaded at the source destination"
+        echo "  --skip_build                    AraSim has already been built at the build destination"
+	echo "  --make_arg                      additional argument to be passed to make"
 }
 
 # Parse command line options
@@ -48,6 +49,10 @@ while [ "$1" != "" ]; do
                 ;;
                 --skip_build )
                         SKIP_BUILD=true
+                ;;
+		--make_arg )
+                        shift
+                        MAKE_ARG="$1"
                 ;;
                 * )
                         usage
@@ -91,16 +96,16 @@ else
 fi
 
 
-# Download and unzip correct version of AraRoot
+# Download and unzip correct version of AraSim
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading AraRoot $GIT_VERSION to $SOURCE_DIR"
-	wget -q https://github.com/ara-software/AraRoot/archive/"$GIT_VERSION".tar.gz -O araroot.tar.gz
-	echo "Extracting AraRoot"
-	TAR_DIR=$(tar -tf araroot.tar.gz | head -1)
-	tar -xzf araroot.tar.gz
-	mv "$TAR_DIR" AraRoot
-	rm araroot.tar.gz
+	echo "Downloading AraSim $GIT_VERSION to $SOURCE_DIR"
+	wget -q https://github.com/ara-software/AraSim/archive/"$GIT_VERSION".tar.gz -O arasim.tar.gz
+	echo "Extracting AraSim"
+	TAR_DIR=$(tar -tf arasim.tar.gz | head -1)
+	tar -xzf arasim.tar.gz
+	mv "$TAR_DIR" AraSim
+	rm arasim.tar.gz
 fi
 
 # Set required environment variables
@@ -112,16 +117,21 @@ eval 'source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh'
 export SQLITE_ROOT="$PLATFORM_DIR"
 export GSL_ROOT="$PLATFORM_DIR"
 export FFTWSYS="$PLATFORM_DIR"
+export BOOST_ROOT="$PLATFORM_DIR"
 export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
 export ARA_ROOT_DIR="${SOURCE_DIR%/}/AraRoot"
 export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
 
-# Run AraRoot installation
+# Run AraSim installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Compiling AraRoot"
-	cd AraRoot
-	sed -i 's:#set(CMAKE_CXX_STANDARD 11):set(CMAKE_CXX_STANDARD 11):' CMakeLists.txt
-	bash INSTALL.sh 1 || exit 6
+	echo "Compiling AraSim"
+	cd AraSim
+	make "$MAKE_ARG" || exit 6
+	make "$MAKE_ARG" -f M.readTree || exit 6
+	make "$MAKE_ARG" -f M.readGeom || exit 6
+	ln -s AraSim "${BUILD_DIR%/}/bin/AraSim"
+	ln -s readTree "${BUILD_DIR%/}/bin/readTree"
+	ln -s readGeom "${BUILD_DIR%/}/bin/readGeom"
 fi
 
-echo "AraRoot installed in $BUILD_DIR"
+echo "AraSim installed in $BUILD_DIR"

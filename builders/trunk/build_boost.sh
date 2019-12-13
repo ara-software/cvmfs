@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build script for GSL
+# Build script for boost
 
 
 usage() {
@@ -8,9 +8,8 @@ usage() {
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 gsl-2.5 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    gsl-2.5 has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  --skip_download                 boost_1_55_0 exists pre-downloaded at the source destination"
+	echo "  --skip_build                    boost_1_55_0 has already been built at the build destination"
 }
 
 # Parse command line options
@@ -40,10 +39,6 @@ while [ "$1" != "" ]; do
 		--skip_build )
 			SKIP_BUILD=true
 		;;
-		--make_arg )
-                        shift
-                        MAKE_ARG="$1"
-                ;;
                 * )
                         usage
                         exit 1
@@ -70,24 +65,29 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Download and unzip gsl-2.5
+# Set original directory
+ORIGIN=$(pwd)
+
+# Download and unzip boost_1_55_0
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading GSL to $SOURCE_DIR"
-	wget -q http://gnu.mirror.constant.com/gsl/gsl-2.5.tar.gz
-	echo "Extracting GSL"
-	tar -xzf gsl-2.5.tar.gz
-	rm gsl-2.5.tar.gz
+	echo "Downloading boost to $SOURCE_DIR"
+	wget -q https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz
+	echo "Extracting boost"
+	tar -xzf boost_1_55_0.tar.gz
+	rm boost_1_55_0.tar.gz
 fi
 
-# Run GSL installation
+# Run boost installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring GSL"
-	cd gsl-2.5
-	./configure CFLAGS=-m64 --with-pic --enable-shared --prefix="$BUILD_DIR" || exit 4
-	echo "Installing GSL"
-	make "$MAKE_ARG" || exit 5
-	make install "$MAKE_ARG" || exit 5
+	echo "Configuring boost"
+	cd "${SOURCE_DIR%/}/boost_1_55_0"
+	./bootstrap.sh --prefix="${BUILD_DIR%/}" || exit 4
+	echo "Installing boost"
+	./bjam install || exit 5
 fi
 
-echo "GSL installed in $BUILD_DIR"
+# Move back to the original directory
+cd "$ORIGIN"
+
+echo "boost installed in $BUILD_DIR"

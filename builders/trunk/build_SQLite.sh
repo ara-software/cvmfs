@@ -10,6 +10,7 @@ usage() {
 	echo "  -b, --build destination         set the build destination directory"
 	echo "  --skip_download                 sqlite-autoconf-3270200 exists pre-downloaded at the source destination"
 	echo "  --skip_build                    sqlite-autoconf-3270200 has already been built at the build destination"
+	echo "  --make_arg                      additional argument to be passed to make"
 }
 
 # Parse command line options
@@ -39,6 +40,10 @@ while [ "$1" != "" ]; do
 		--skip_build )
 			SKIP_BUILD=true
 		;;
+		--make_arg )
+                        shift
+                        MAKE_ARG="$1"
+                ;;
                 * )
                         usage
                         exit 1
@@ -49,10 +54,10 @@ done
 
 if [ "$DEST" != "" ]; then
 	if [ "$SOURCE_DIR" == "" ]; then
-		SOURCE_DIR="${DEST%/}/source"
+		SOURCE_DIR="${DEST%/}/source/"
 	fi
 	if [ "$BUILD_DIR" == "" ]; then
-		BUILD_DIR="${DEST%/}/build"
+		BUILD_DIR="${DEST%/}/build/"
 	fi
 fi
 
@@ -69,7 +74,7 @@ fi
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
 	echo "Downloading SQLite to $SOURCE_DIR"
-	wget -q https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz
+	wget https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz
 	echo "Extracting SQLite"
 	tar -xzf sqlite-autoconf-3270200.tar.gz
 	rm sqlite-autoconf-3270200.tar.gz
@@ -81,7 +86,8 @@ if [ $SKIP_BUILD = false ]; then
 	cd sqlite-autoconf-3270200
 	./configure --enable-shared --prefix="$BUILD_DIR" || exit 4
 	echo "Installing SQLite"
-	make && make install || exit 5
+	make "$MAKE_ARG" || exit 5
+	make install "$MAKE_ARG" || exit 5
 fi
 
 echo "SQLite installed in $BUILD_DIR"

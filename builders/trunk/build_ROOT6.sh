@@ -10,6 +10,8 @@ usage() {
 	echo "  -b, --build destination         set the build destination directory"
 	echo "  --skip_download                 root-6.16.00 exists pre-downloaded at the source destination"
 	echo "  --skip_build                    root-6.16.00 has already been built at the build destination"
+	echo "  --make_arg			additional argument to be passed to make"
+	echo "  --cmake                         which cmake to use for building"
 }
 
 # Parse command line options
@@ -39,6 +41,14 @@ while [ "$1" != "" ]; do
 		--skip_build )
 			SKIP_BUILD=true
 		;;
+		--make_arg )
+			shift
+			MAKE_ARG="$1"
+		;;
+		--cmake )
+			shift
+			CMAKE="$1"
+		;;
                 * )
                         usage
                         exit 1
@@ -49,10 +59,10 @@ done
 
 if [ "$DEST" != "" ]; then
 	if [ "$SOURCE_DIR" == "" ]; then
-		SOURCE_DIR="${DEST%/}/source"
+		SOURCE_DIR="${DEST%/}/source/"
 	fi
 	if [ "$BUILD_DIR" == "" ]; then
-		BUILD_DIR="${DEST%/}/build"
+		BUILD_DIR="${DEST%/}/build/"
 	fi
 fi
 
@@ -63,6 +73,14 @@ fi
 if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
+fi
+
+if [ "$CMAKE" == "" ]; then
+	CMAKE="${BUILD_DIR%/}/bin/cmake"
+fi
+
+if [ ! -f "$CMAKE" ]; then
+	CMAKE=$(which cmake)
 fi
 
 # Set original directory
@@ -82,9 +100,9 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Configuring ROOT6"
 	cd "$BUILD_DIR"
-	cmake -Dminuit2:bool=true "${SOURCE_DIR%/}/root-6.16.00" || exit 4
+	$CMAKE -Dminuit2:bool=true "${SOURCE_DIR%/}/root-6.16.00" || exit 4
 	echo "Installing ROOT6"
-	make || exit 5
+	make "$MAKE_ARG" || exit 5
 fi
 
 # Move back to the original directory
