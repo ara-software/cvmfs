@@ -129,9 +129,9 @@ if [ $SKIP_BUILD = false ]; then
 	make "$MAKE_ARG" || exit 6
 	make "$MAKE_ARG" -f M.readTree || exit 6
 	make "$MAKE_ARG" -f M.readGeom || exit 6
-	ln -s AraSim "${BUILD_DIR%/}/bin/AraSim"
-	ln -s readTree "${BUILD_DIR%/}/bin/readTree"
-	ln -s readGeom "${BUILD_DIR%/}/bin/readGeom"
+	cp AraSim "${BUILD_DIR%/}/bin/AraSim"
+	cp readTree "${BUILD_DIR%/}/bin/readTree"
+	cp readGeom "${BUILD_DIR%/}/bin/readGeom"
 fi
 
 echo "AraSim installed in $BUILD_DIR"
