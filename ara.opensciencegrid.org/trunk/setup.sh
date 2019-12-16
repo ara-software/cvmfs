@@ -9,7 +9,7 @@ export LD_LIBRARY_PATH="$ARA_SETUP_DIR/build/lib:$LD_LIBRARY_PATH"
 export DYLD_LIBRARY_PATH="$ARA_SETUP_DIR/build/lib:$DYLD_LIBRARY_PATH"
 export PATH="$ARA_SETUP_DIR/build/bin:$PATH"
 
-eval 'source "$ARA_SETUP_DIR"/root_build/bin/thisroot.sh'
+source "$ARA_SETUP_DIR"/root_build/bin/thisroot.sh
 
 export SQLITE_ROOT="$ARA_SETUP_DIR/build"
 export GSL_ROOT="$ARA_SETUP_DIR/build"
