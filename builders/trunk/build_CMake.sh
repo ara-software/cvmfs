@@ -1,16 +1,21 @@
 #!/bin/bash
 # Build script for CMake
 
+# Set script parameters
+PACKAGE_NAME="CMake"
+DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz"
+PACKAGE_DIR_NAME="cmake-3.13.4"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 cmake-3.13.4 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    cmake-3.13.4 has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 
@@ -71,24 +76,25 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Download and unzip cmake-3.13.4
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading CMake to $SOURCE_DIR"
-	wget -q https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz
-	echo "Extracting CMake"
-	tar -xzf cmake-3.13.4.tar.gz
-	rm cmake-3.13.4.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run CMake installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring CMake"
-	cd cmake-3.13.4
-	./configure --prefix="$BUILD_DIR" || exit 4
-	echo "Installing CMake"
-	gmake "$MAKE_ARG" || exit 5
-	make install "$MAKE_ARG" || exit 5
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	./configure --prefix="$BUILD_DIR" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
-echo "CMake installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

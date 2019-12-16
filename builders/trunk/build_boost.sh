@@ -1,6 +1,11 @@
 #!/bin/bash
 # Build script for boost
 
+# Set script parameters
+PACKAGE_NAME="boost"
+DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz"
+PACKAGE_DIR_NAME="boost_1_55_0"
+
 
 usage() {
 	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
@@ -8,8 +13,8 @@ usage() {
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 boost_1_55_0 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    boost_1_55_0 has already been built at the build destination"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -65,29 +70,24 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Set original directory
-ORIGIN=$(pwd)
-
-# Download and unzip boost_1_55_0
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading boost to $SOURCE_DIR"
-	wget -q https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz
-	echo "Extracting boost"
-	tar -xzf boost_1_55_0.tar.gz
-	rm boost_1_55_0.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run boost installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring boost"
-	cd "${SOURCE_DIR%/}/boost_1_55_0"
-	./bootstrap.sh --prefix="${BUILD_DIR%/}" || exit 4
-	echo "Installing boost"
-	./bjam install || exit 5
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	./bootstrap.sh --prefix="${BUILD_DIR%/}" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	./bjam install || exit 32
 fi
 
-# Move back to the original directory
-cd "$ORIGIN"
-
-echo "boost installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

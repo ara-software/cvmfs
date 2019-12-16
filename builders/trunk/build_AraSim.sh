@@ -1,18 +1,22 @@
 #!/bin/bash
 # Build script for AraSim
 
+# Set script parameters
+PACKAGE_NAME="AraSim"
+DOWNLOAD_LINK="https://github.com/ara-software/AraSim/archive/master.tar.gz"
+PACKAGE_DIR_NAME="AraSim"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-v version] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-r destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  -r, --root destination          location of the root build directory"
-	echo "  -v, --version version           version to be installed"
-	echo "  --skip_download                 AraSim exists pre-downloaded at the source destination"
-	echo "  --skip_build                    AraSim has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  -r, --root destination          set the root build destination directory"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -39,10 +43,6 @@ while [ "$1" != "" ]; do
 		-r | --root )
 			shift
 			ROOT_BUILD_DIR="$1"
-		;;
-		-v | --version )
-			shift
-			VERSION="$1"
 		;;
 		--skip_download )
 			SKIP_DOWNLOAD=true
@@ -71,6 +71,10 @@ if [ "$DEST" != "" ]; then
 	fi
 fi
 
+if [ "$ROOT_BUILD_DIR" == "" ]; then
+	ROOT_BUILD_DIR="$BUILD_DIR"
+fi
+
 if [ ! -d "$SOURCE_DIR" ]; then
 	echo "Invalid source destination directory: $SOURCE_DIR"
 	exit 2
@@ -79,59 +83,48 @@ if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
 fi
-
-if [ "$ROOT_BUILD_DIR" == "" ]; then
-	ROOT_BUILD_DIR="$BUILD_DIR"
-fi
-
-if [ "$VERSION" == "" ]; then
-	echo "Must specify version name"
-	exit 9
-fi
-
-if [ "$VERSION" == "trunk" ]; then
-	GIT_VERSION="master"
-else
-	GIT_VERSION="$VERSION"
+if [ ! -d "$ROOT_BUILD_DIR" ]; then
+	echo "Invalid root build destination directory: $ROOT_BUILD_DIR"
+	exit 4
 fi
 
 
-# Download and unzip correct version of AraSim
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading AraSim $GIT_VERSION to $SOURCE_DIR"
-	wget -q https://github.com/ara-software/AraSim/archive/"$GIT_VERSION".tar.gz -O arasim.tar.gz
-	echo "Extracting AraSim"
-	TAR_DIR=$(tar -tf arasim.tar.gz | head -1)
-	tar -xzf arasim.tar.gz
-	mv "$TAR_DIR" AraSim
-	rm arasim.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
 # Set required environment variables
-export PLATFORM_DIR="${BUILD_DIR%/}"
-export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
-export PATH="$PLATFORM_DIR/bin:$PATH"
-eval 'source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh'
-export SQLITE_ROOT="$PLATFORM_DIR"
-export GSL_ROOT="$PLATFORM_DIR"
-export FFTWSYS="$PLATFORM_DIR"
-export BOOST_ROOT="$PLATFORM_DIR"
-export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
-export ARA_ROOT_DIR="${SOURCE_DIR%/}/AraRoot"
-export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
-
-# Run AraSim installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Compiling AraSim"
-	cd AraSim
-	make "$MAKE_ARG" || exit 6
-	make "$MAKE_ARG" -f M.readTree || exit 6
-	make "$MAKE_ARG" -f M.readGeom || exit 6
+	export PLATFORM_DIR="${BUILD_DIR%/}"
+	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
+	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
+	export PATH="$PLATFORM_DIR/bin:$PATH"
+	source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
+	export SQLITE_ROOT="$PLATFORM_DIR"
+	export GSL_ROOT="$PLATFORM_DIR"
+	export FFTWSYS="$PLATFORM_DIR"
+	export BOOST_ROOT="$PLATFORM_DIR"
+	export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
+	export ARA_ROOT_DIR="${SOURCE_DIR%/}/AraRoot"
+fi
+
+# Run package installation
+if [ $SKIP_BUILD = false ]; then
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	make "$MAKE_ARG" || exit 31
+	make "$MAKE_ARG" -f M.readTree || exit 32
+	make "$MAKE_ARG" -f M.readGeom || exit 33
 	cp AraSim "${BUILD_DIR%/}/bin/AraSim"
 	cp readTree "${BUILD_DIR%/}/bin/readTree"
 	cp readGeom "${BUILD_DIR%/}/bin/readGeom"
 fi
 
-echo "AraSim installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

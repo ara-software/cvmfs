@@ -1,16 +1,21 @@
 #!/bin/bash
 # Build script for GSL
 
+# Set script parameters
+PACKAGE_NAME="GSL"
+DOWNLOAD_LINK="http://gnu.mirror.constant.com/gsl/gsl-2.5.tar.gz"
+PACKAGE_DIR_NAME="gsl-2.5"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 gsl-2.5 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    gsl-2.5 has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -70,24 +75,25 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Download and unzip gsl-2.5
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading GSL to $SOURCE_DIR"
-	wget -q http://gnu.mirror.constant.com/gsl/gsl-2.5.tar.gz
-	echo "Extracting GSL"
-	tar -xzf gsl-2.5.tar.gz
-	rm gsl-2.5.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run GSL installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring GSL"
-	cd gsl-2.5
-	./configure CFLAGS=-m64 --with-pic --enable-shared --prefix="$BUILD_DIR" || exit 4
-	echo "Installing GSL"
-	make "$MAKE_ARG" || exit 5
-	make install "$MAKE_ARG" || exit 5
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	./configure CFLAGS=-m64 --with-pic --enable-shared --prefix="$BUILD_DIR" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
-echo "GSL installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

@@ -1,16 +1,21 @@
 #!/bin/bash
 # Build script for SQLite
 
+# Set script parameters
+PACKAGE_NAME="SQLite"
+DOWNLOAD_LINK="https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz"
+PACKAGE_DIR_NAME="sqlite-autoconf-3270200"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 sqlite-autoconf-3270200 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    sqlite-autoconf-3270200 has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -70,24 +75,25 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Download and unzip sqlite-autoconf-3270300
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading SQLite to $SOURCE_DIR"
-	wget https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz
-	echo "Extracting SQLite"
-	tar -xzf sqlite-autoconf-3270200.tar.gz
-	rm sqlite-autoconf-3270200.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run SQLite installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring SQLite"
-	cd sqlite-autoconf-3270200
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 4
-	echo "Installing SQLite"
-	make "$MAKE_ARG" || exit 5
-	make install "$MAKE_ARG" || exit 5
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
-echo "SQLite installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

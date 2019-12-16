@@ -1,17 +1,22 @@
 #!/bin/bash
 # Build script for ROOT6
 
+# Set script parameters
+PACKAGE_NAME="ROOT6"
+DOWNLOAD_LINK="https://root.cern/download/root_v6.16.00.source.tar.gz"
+PACKAGE_DIR_NAME="root-6.16.00"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--cmake executable] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 root-6.16.00 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    root-6.16.00 has already been built at the build destination"
-	echo "  --make_arg			additional argument to be passed to make"
-	echo "  --cmake                         which cmake to use for building"
+	echo "  --cmake executable              which cmake to use for building"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -78,34 +83,29 @@ fi
 if [ "$CMAKE" == "" ]; then
 	CMAKE="${BUILD_DIR%/}/bin/cmake"
 fi
-
 if [ ! -f "$CMAKE" ]; then
 	CMAKE=$(which cmake)
 fi
 
-# Set original directory
-ORIGIN=$(pwd)
 
-# Download and unzip root_v6.16.00
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading ROOT6 to $SOURCE_DIR"
-	wget -q https://root.cern/download/root_v6.16.00.source.tar.gz
-	echo "Extracting ROOT6"
-	tar -xzf root_v6.16.00.source.tar.gz
-	rm root_v6.16.00.source.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run ROOT6 installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring ROOT6"
+	echo "Compiling $PACKAGE_NAME"
 	cd "$BUILD_DIR"
-	$CMAKE -Dminuit2:bool=true "${SOURCE_DIR%/}/root-6.16.00" || exit 4
-	echo "Installing ROOT6"
-	make "$MAKE_ARG" || exit 5
+	$CMAKE -Dminuit2:bool=true "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	make "$MAKE_ARG" || exit 32
 fi
 
-# Move back to the original directory
-cd "$ORIGIN"
-
-echo "ROOT6 installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"

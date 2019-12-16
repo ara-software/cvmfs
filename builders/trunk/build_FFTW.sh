@@ -1,16 +1,21 @@
 #!/bin/bash
 # Build script for FFTW
 
+# Set script parameters
+PACKAGE_NAME="FFTW"
+DOWNLOAD_LINK="http://www.fftw.org/fftw-3.3.8.tar.gz"
+PACKAGE_DIR_NAME="fftw-3.3.8"
+
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --skip_download                 fftw-3.3.8 exists pre-downloaded at the source destination"
-	echo "  --skip_build                    fftw-3.3.8 has already been built at the build destination"
-	echo "  --make_arg                      additional argument to be passed to make"
+	echo "  --make_arg argument             additional argument to be passed to make"
+	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
+	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 }
 
 # Parse command line options
@@ -70,24 +75,25 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-# Download and unzip fftw-3.3.8
+# Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
-	echo "Downloading FFTW to $SOURCE_DIR"
-	wget -q http://www.fftw.org/fftw-3.3.8.tar.gz
-	echo "Extracting FFTW"
-	tar -xzf fftw-3.3.8.tar.gz
-	rm fftw-3.3.8.tar.gz
+	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	echo "Extracting $PACKAGE_NAME"
+	mkdir "$PACKAGE_DIR_NAME"
+	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Run FFTW installation
+# Run package installation
 if [ $SKIP_BUILD = false ]; then
-	echo "Configuring FFTW"
-	cd fftw-3.3.8
-	./configure --enable-shared --disable-fortran --prefix="$BUILD_DIR" || exit 4
-	echo "Installing FFTW"
-	make "$MAKE_ARG" || exit 5
-	make install "$MAKE_ARG" || exit 5
+	echo "Compiling $PACKAGE_NAME"
+	cd "$PACKAGE_DIR_NAME"
+	./configure --enable-shared --disable-fortran --prefix="$BUILD_DIR" || exit 31
+	echo "Installing $PACKAGE_NAME"
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
-echo "FFTW installed in $BUILD_DIR"
+echo "$PACKAGE_NAME installed in $BUILD_DIR"
