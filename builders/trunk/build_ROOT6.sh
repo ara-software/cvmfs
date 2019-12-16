@@ -99,6 +99,17 @@ if [ $SKIP_DOWNLOAD = false ]; then
 	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
+# Set required environment variables
+if [ $SKIP_BUILD = false ]; then
+	export PLATFORM_DIR="${BUILD_DIR%/}"
+	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
+	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
+	export PATH="$PLATFORM_DIR/bin:$PATH"
+	export SQLITE_ROOT="$PLATFORM_DIR"
+	export GSL_ROOT="$PLATFORM_DIR"
+	export FFTWSYS="$PLATFORM_DIR"
+fi
+
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
