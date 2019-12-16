@@ -26,9 +26,9 @@ while [ "$1" != "" ]; do
 			VERSION="$1"
 		;;
 		--make_arg )
-                        shift
-                        MAKE_ARG="--make_arg $1"
-                ;;
+			shift
+			MAKE_ARG="--make_arg $1"
+		;;
 		* )
 			usage
 			exit 1
@@ -88,4 +88,3 @@ fi
 ./build_AraSim.sh --dest "$FULL_DEST" --version "$VERSION" --root "$ROOT_BUILD_DIR" $MAKE_ARG || exit 109
 
 echo "Finished building ARA software"
-

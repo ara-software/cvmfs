@@ -3,15 +3,15 @@
 
 
 usage() {
-        echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-v version] [--skip_download, --skip_build]"
-        echo "  -h, --help                      display this help message"
-        echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
-        echo "  -s, --source destination        set the source destination directory"
-        echo "  -b, --build destination         set the build destination directory"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-v version] [--skip_download, --skip_build]"
+	echo "  -h, --help                      display this help message"
+	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
+	echo "  -s, --source destination        set the source destination directory"
+	echo "  -b, --build destination         set the build destination directory"
 	echo "  -r, --root destination          location of the root build directory"
 	echo "  -v, --version version           version to be installed"
-        echo "  --skip_download                 AraSim exists pre-downloaded at the source destination"
-        echo "  --skip_build                    AraSim has already been built at the build destination"
+	echo "  --skip_download                 AraSim exists pre-downloaded at the source destination"
+	echo "  --skip_build                    AraSim has already been built at the build destination"
 	echo "  --make_arg                      additional argument to be passed to make"
 }
 
@@ -19,69 +19,69 @@ usage() {
 SKIP_DOWNLOAD=false
 SKIP_BUILD=false
 while [ "$1" != "" ]; do
-        case $1 in
-                -h | --help )
-                        usage
-                        exit
-                ;;
-                -d | --dest )
-                        shift
-                        DEST="$1"
-                ;;
-                -s | --source )
-                        shift
-                        SOURCE_DIR="$1"
-                ;;
-                -b | --build )
-                        shift
-                        BUILD_DIR="$1"
-                ;;
+	case $1 in
+		-h | --help )
+			usage
+			exit
+		;;
+		-d | --dest )
+			shift
+			DEST="$1"
+		;;
+		-s | --source )
+			shift
+			SOURCE_DIR="$1"
+		;;
+		-b | --build )
+			shift
+			BUILD_DIR="$1"
+		;;
 		-r | --root )
-                        shift
-                        ROOT_BUILD_DIR="$1"
-                ;;
+			shift
+			ROOT_BUILD_DIR="$1"
+		;;
 		-v | --version )
 			shift
 			VERSION="$1"
 		;;
-                --skip_download )
-                        SKIP_DOWNLOAD=true
-                ;;
-                --skip_build )
-                        SKIP_BUILD=true
-                ;;
+		--skip_download )
+			SKIP_DOWNLOAD=true
+		;;
+		--skip_build )
+			SKIP_BUILD=true
+		;;
 		--make_arg )
-                        shift
-                        MAKE_ARG="$1"
-                ;;
-                * )
-                        usage
-                        exit 1
-                ;;
-        esac
-        shift
+			shift
+			MAKE_ARG="$1"
+		;;
+		* )
+			usage
+			exit 1
+		;;
+	esac
+	shift
 done
 
 if [ "$DEST" != "" ]; then
-        if [ "$SOURCE_DIR" == "" ]; then
-                SOURCE_DIR="${DEST%/}/source/"
-        fi
-        if [ "$BUILD_DIR" == "" ]; then
-                BUILD_DIR="${DEST%/}/build/"
-        fi
+	if [ "$SOURCE_DIR" == "" ]; then
+		SOURCE_DIR="${DEST%/}/source/"
+	fi
+	if [ "$BUILD_DIR" == "" ]; then
+		BUILD_DIR="${DEST%/}/build/"
+	fi
 fi
 
 if [ ! -d "$SOURCE_DIR" ]; then
-        echo "Invalid source destination directory: $SOURCE_DIR"
-        exit 2
+	echo "Invalid source destination directory: $SOURCE_DIR"
+	exit 2
 fi
 if [ ! -d "$BUILD_DIR" ]; then
-        echo "Invalid build destination directory: $BUILD_DIR"
-        exit 3
+	echo "Invalid build destination directory: $BUILD_DIR"
+	exit 3
 fi
 
 if [ "$ROOT_BUILD_DIR" == "" ]; then
-        ROOT_BUILD_DIR="$BUILD_DIR"
+	ROOT_BUILD_DIR="$BUILD_DIR"
 fi
 
 if [ "$VERSION" == "" ]; then

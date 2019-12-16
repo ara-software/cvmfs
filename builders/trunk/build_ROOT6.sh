@@ -3,8 +3,8 @@
 
 
 usage() {
-        echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
-        echo "  -h, --help                      display this help message"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build]"
+	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
@@ -18,19 +18,19 @@ usage() {
 SKIP_DOWNLOAD=false
 SKIP_BUILD=false
 while [ "$1" != "" ]; do
-        case $1 in
-                -h | --help )
-                        usage
-                        exit
-                ;;
+	case $1 in
+		-h | --help )
+			usage
+			exit
+		;;
 		-d | --dest )
 			shift
 			DEST="$1"
 		;;
-                -s | --source )
-                        shift
-                        SOURCE_DIR="$1"
-                ;;
+		-s | --source )
+			shift
+			SOURCE_DIR="$1"
+		;;
 		-b | --build )
 			shift
 			BUILD_DIR="$1"
@@ -49,12 +49,12 @@ while [ "$1" != "" ]; do
 			shift
 			CMAKE="$1"
 		;;
-                * )
-                        usage
-                        exit 1
-                ;;
-        esac
-        shift
+		* )
+			usage
+			exit 1
+		;;
+	esac
+	shift
 done
 
 if [ "$DEST" != "" ]; then
@@ -67,8 +67,8 @@ if [ "$DEST" != "" ]; then
 fi
 
 if [ ! -d "$SOURCE_DIR" ]; then
-        echo "Invalid source destination directory: $SOURCE_DIR"
-        exit 2
+	echo "Invalid source destination directory: $SOURCE_DIR"
+	exit 2
 fi
 if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
