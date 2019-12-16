@@ -3,4 +3,5 @@ ara.opensciencegrid.org/*/*
 
 # Don't ignore static distribution files
 !ara.opensciencegrid.org/*/setup.sh
+!ara.opensciencegrid.org/*/README.md
 
