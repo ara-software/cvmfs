@@ -107,6 +107,7 @@ if [ $SKIP_BUILD = false ]; then
 	export FFTWSYS="$PLATFORM_DIR"
 	export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
 	export ARA_ROOT_DIR="${SOURCE_DIR%/}/$PACKAGE_DIR_NAME"
+	export CMAKE_PREFIX_PATH="$ARA_UTIL_INSTALL_DIR"
 fi
 
 # Run package installation
