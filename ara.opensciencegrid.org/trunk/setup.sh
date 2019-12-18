@@ -1,7 +1,8 @@
 #!/bin/sh
 # Setup script for trunk version of ARA software
 
-export ARA_SETUP_DIR="/scratch/fasig/ara.opensciencegrid.org/trunk"
+# Get the location of this script
+export ARA_SETUP_DIR=$(cd "$(dirname "$0")" && pwd)
 
 export PLATFORM_DIR="$ARA_SETUP_DIR/build"
 
