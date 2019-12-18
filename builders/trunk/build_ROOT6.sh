@@ -8,12 +8,12 @@ PACKAGE_DIR_NAME="root-6.16.00"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--cmake executable] [--make_arg argument] [--skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-r destination] [--make_arg argument] [--skip_download, --skip_build]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --cmake executable              which cmake to use for building"
+	echo "  -r, --root destination          set the root build destination directory"
 	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
@@ -39,6 +39,10 @@ while [ "$1" != "" ]; do
 		-b | --build )
 			shift
 			BUILD_DIR="$1"
+		;;
+		-r | --root )
+			shift
+			ROOT_BUILD_DIR="$1"
 		;;
 		--skip_download )
 			SKIP_DOWNLOAD=true
@@ -71,6 +75,10 @@ if [ "$DEST" != "" ]; then
 	fi
 fi
 
+if [ "$ROOT_BUILD_DIR" == "" ]; then
+	ROOT_BUILD_DIR="$BUILD_DIR"
+fi
+
 if [ ! -d "$SOURCE_DIR" ]; then
 	echo "Invalid source destination directory: $SOURCE_DIR"
 	exit 2
@@ -79,12 +87,9 @@ if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
 fi
-
-if [ "$CMAKE" == "" ]; then
-	CMAKE="${BUILD_DIR%/}/bin/cmake"
-fi
-if [ ! -f "$CMAKE" ]; then
-	CMAKE=$(which cmake)
+if [ ! -d "$ROOT_BUILD_DIR" ]; then
+	echo "Invalid root build destination directory: $ROOT_BUILD_DIR"
+	exit 4
 fi
 
 
@@ -99,22 +104,11 @@ if [ $SKIP_DOWNLOAD = false ]; then
 	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
-# Set required environment variables
-if [ $SKIP_BUILD = false ]; then
-	export PLATFORM_DIR="${BUILD_DIR%/}"
-	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
-	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
-	export PATH="$PLATFORM_DIR/bin:$PATH"
-	export SQLITE_ROOT="$PLATFORM_DIR"
-	export GSL_ROOT="$PLATFORM_DIR"
-	export FFTWSYS="$PLATFORM_DIR"
-fi
-
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
-	cd "$BUILD_DIR"
-	$CMAKE -Dminuit2:bool=true "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
+	cd "$ROOT_BUILD_DIR"
+	cmake -Dminuit2:bool=true -DCMAKE_PREFIX_PATH="${BUILD_DIR%/}" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 fi
