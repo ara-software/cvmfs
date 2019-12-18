@@ -104,11 +104,20 @@ if [ $SKIP_DOWNLOAD = false ]; then
 	rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
+# Set required environment variables
+if [ $SKIP_BUILD = false ]; then
+	export PLATFORM_DIR="${BUILD_DIR%/}"
+	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
+	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
+	export PATH="$PLATFORM_DIR/bin:$PATH"
+	export CMAKE_PREFIX_PATH="$PLATFORM_DIR"
+fi
+
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$ROOT_BUILD_DIR"
-	cmake -Dminuit2:bool=true -DCMAKE_PREFIX_PATH="${BUILD_DIR%/}" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
+	cmake -Dminuit2:bool=true "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 fi
