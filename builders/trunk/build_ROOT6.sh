@@ -106,11 +106,11 @@ fi
 
 # Set required environment variables
 if [ $SKIP_BUILD = false ]; then
-	export PLATFORM_DIR="${BUILD_DIR%/}"
-	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
-	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
-	export PATH="$PLATFORM_DIR/bin:$PATH"
-	export CMAKE_PREFIX_PATH="$PLATFORM_DIR"
+	export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
+	export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
+	export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
+	export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
+	export CMAKE_PREFIX_PATH="$ARA_UTIL_INSTALL_DIR"
 fi
 
 # Run package installation

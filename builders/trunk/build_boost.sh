@@ -85,7 +85,7 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./bootstrap.sh --prefix="${BUILD_DIR%/}" || exit 31
+	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	./bjam install || exit 32
 fi

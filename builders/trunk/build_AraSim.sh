@@ -102,17 +102,13 @@ fi
 
 # Set required environment variables
 if [ $SKIP_BUILD = false ]; then
-	export PLATFORM_DIR="${BUILD_DIR%/}"
-	export DYLD_LIBRARY_PATH="$PLATFORM_DIR/lib:$DYLD_LIBRARY_PATH"
-	export LD_LIBRARY_PATH="$PLATFORM_DIR/lib:$LD_LIBRARY_PATH"
-	export PATH="$PLATFORM_DIR/bin:$PATH"
-	source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
-	export SQLITE_ROOT="$PLATFORM_DIR"
-	export GSL_ROOT="$PLATFORM_DIR"
-	export FFTWSYS="$PLATFORM_DIR"
-	export BOOST_ROOT="$PLATFORM_DIR"
 	export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
 	export ARA_ROOT_DIR="${SOURCE_DIR%/}/AraRoot"
+	export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
+	export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
+	export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
+	source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
+	export BOOST_ROOT="$ARA_UTIL_INSTALL_DIR"
 fi
 
 # Run package installation
