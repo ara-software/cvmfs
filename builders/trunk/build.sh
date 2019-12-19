@@ -73,8 +73,6 @@ else
 	FULL_DEST="$DEST"
 fi
 
-echo "Building to $FULL_DEST"
-
 SKIP_ARG=""
 if [ $SKIP_DOWNLOAD = true ]; then
 	SKIP_ARG="$SKIP_ARG --skip_download"
@@ -85,6 +83,26 @@ fi
 
 # Discover the directory containing this script
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# Look for expected build tools
+TOOLS="make gcc"
+MISSING=0
+echo "Searching for expected build tools..."
+for TOOL in $TOOLS; do
+	if [ $(command -v $TOOL) ]; then
+		echo "$(command -v $TOOL) found: $($TOOL --version | head -1)"
+	else
+		echo "$TOOL NOT found"
+		MISSING=$(($MISSING + 1))
+	fi
+done
+if [ $MISSING -eq 0 ]; then
+	echo "Found all expected build tools"
+else
+	echo "Missing $MISSING expected build tools, continuing anyway"
+fi
+
+echo "Building to $FULL_DEST"
 
 # Create the required source and build directories
 SOURCE_DIR="${FULL_DEST%/}/source/"
