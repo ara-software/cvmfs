@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Build script for AraRoot
 
 # Set script parameters
@@ -58,15 +58,15 @@ while [ "$1" != "" ]; do
 done
 
 if [ "$DEST" != "" ]; then
-	if [ "$SOURCE_DIR" == "" ]; then
+	if [ -z "$SOURCE_DIR" ]; then
 		SOURCE_DIR="${DEST%/}/source/"
 	fi
-	if [ "$BUILD_DIR" == "" ]; then
+	if [ -z "$BUILD_DIR" ]; then
 		BUILD_DIR="${DEST%/}/build/"
 	fi
 fi
 
-if [ "$ROOT_BUILD_DIR" == "" ]; then
+if [ -z "$ROOT_BUILD_DIR" ]; then
 	ROOT_BUILD_DIR="$BUILD_DIR"
 fi
 
@@ -102,7 +102,7 @@ if [ $SKIP_BUILD = false ]; then
 	export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
 	export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
 	export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
-	source "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
+	. "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
 	export SQLITE_ROOT="$ARA_UTIL_INSTALL_DIR"
 	export GSL_ROOT="$ARA_UTIL_INSTALL_DIR"
 	export FFTWSYS="$ARA_UTIL_INSTALL_DIR"

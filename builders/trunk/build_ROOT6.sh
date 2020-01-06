@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Build script for ROOT6
 
 # Set script parameters
@@ -67,15 +67,15 @@ while [ "$1" != "" ]; do
 done
 
 if [ "$DEST" != "" ]; then
-	if [ "$SOURCE_DIR" == "" ]; then
+	if [ -z "$SOURCE_DIR" ]; then
 		SOURCE_DIR="${DEST%/}/source/"
 	fi
-	if [ "$BUILD_DIR" == "" ]; then
+	if [ -z "$BUILD_DIR" ]; then
 		BUILD_DIR="${DEST%/}/build/"
 	fi
 fi
 
-if [ "$ROOT_BUILD_DIR" == "" ]; then
+if [ -z "$ROOT_BUILD_DIR" ]; then
 	ROOT_BUILD_DIR="$BUILD_DIR"
 fi
 

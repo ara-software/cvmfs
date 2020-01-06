@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Build script for trunk version of ARA software
 
 
