@@ -3,7 +3,7 @@
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-v version] [--make_arg argument] [--dryrun, --skip_download, --skip_build]"
+	echo "usage: $0 [-h] [-d destination] [-v version] [--make_arg argument] [--dryrun, --skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the build destination directory"
 	echo "  -v, --version version           set the version name/number"
@@ -11,6 +11,7 @@ usage() {
 	echo "  --dryrun                        dryrun of all build scripts"
 	echo "  --skip_download                 skip download steps of build scripts"
 	echo "  --skip_build                    skip build steps of build scripts"
+	echo "  --clean_source                  remove unneeded source directories"
 }
 
 error() {
@@ -48,6 +49,9 @@ while [ "$1" != "" ]; do
 		;;
 		--skip_build )
 			SKIP_BUILD=true
+		;;
+		--clean_source)
+			CLEAN_SOURCE="--clean_source"
 		;;
 		* )
 			usage
@@ -120,12 +124,12 @@ fi
 
 # Run build scripts from this script's directory
 cd "$SCRIPT_DIR"
-./build_CMake.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG || error 101 "Failed CMake build"
-./build_FFTW.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG || error 102 "Failed FFTW build"
-./build_GSL.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG || error 103 "Failed GSL build"
-./build_SQLite.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG || error 104 "Failed SQLite build"
-./build_boost.sh --dest "$FULL_DEST" $SKIP_ARG || error 105 "Failed boost build"
-./build_ROOT6.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 106 "Failed ROOT6 build"
+./build_CMake.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
+./build_FFTW.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
+./build_GSL.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
+./build_SQLite.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 104 "Failed SQLite build"
+./build_boost.sh --dest "$FULL_DEST" $SKIP_ARG $CLEAN_SOURCE || error 105 "Failed boost build"
+./build_ROOT6.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 106 "Failed ROOT6 build"
 ./build_libRootFftwWrapper.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
 ./build_AraRoot.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
 ./build_AraSim.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
