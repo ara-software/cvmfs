@@ -85,6 +85,11 @@ if [ $SKIP_BUILD = true ]; then
 	SKIP_ARG="$SKIP_ARG --skip_build"
 fi
 
+# Don't clean source directories in a dry run
+if ([ $SKIP_DOWNLOAD = true ] && [ $SKIP_BUILD = true ]); then
+	CLEAN_SOURCE=""
+fi
+
 # Discover the directory containing this script
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
