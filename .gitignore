@@ -1,7 +1,9 @@
-# Ignore all distribution files
-ara.opensciencegrid.org/*/*
+# Ignore built distribution files
+ara.opensciencegrid.org/*/build/*
+ara.opensciencegrid.org/*/root_build/*
+ara.opensciencegrid.org/*/source/*
 
 # Don't ignore static distribution files
-!ara.opensciencegrid.org/*/setup.sh
-!ara.opensciencegrid.org/*/README.md
-
+!ara.opensciencegrid.org/*/build/macros
+ara.opensciencegrid.org/*/build/macros/*
+!ara.opensciencegrid.org/*/build/macros/ara_rootlogon.C
