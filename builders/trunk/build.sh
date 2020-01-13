@@ -139,4 +139,10 @@ cd "$SCRIPT_DIR"
 ./build_AraRoot.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
 ./build_AraSim.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
 
+# Hardcode destination path in the setup script
+if [ $SKIP_BUILD = false ]; then
+	echo "Recording installation path in setup script"
+	sed -i s:/PATH/TO/THIS/SCRIPT:$FULL_DEST: "$FULL_DEST/setup.sh"
+fi
+
 echo "Finished building ARA software"
