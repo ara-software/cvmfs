@@ -48,6 +48,7 @@ if [ "$ARA_GCC_VERSION" = "4.8.5" ]; then
 			# gcc version is less than 4.0.0
 			echo "The ARA software was compiled with gcc version $ARA_GCC_VERSION."
 			echo "Your system uses gcc version $SYS_GCC_VERSION, which could result in some problems."
+			echo "Consider using a new version of gcc."
 		;;
 		* )
 			# gcc version is greater than 5.0.0
