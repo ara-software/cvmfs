@@ -3,10 +3,9 @@
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-v version] [--make_arg argument] [--dryrun, --skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [--make_arg argument] [--dryrun, --skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the build destination directory"
-	echo "  -v, --version version           set the version name/number"
 	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --dryrun                        dryrun of all build scripts"
 	echo "  --skip_download                 skip download steps of build scripts"
@@ -31,10 +30,6 @@ while [ "$1" != "" ]; do
 		-d | --dest )
 			shift
 			DEST="$1"
-		;;
-		-v | --version )
-			shift
-			VERSION="$1"
 		;;
 		--make_arg )
 			shift
@@ -67,15 +62,6 @@ if [ ! -d "$DEST" ]; then
 fi
 
 DEST=$(cd "$DEST" && pwd)
-
-if [ "$VERSION" != "" ]; then
-	FULL_DEST="${DEST%/}/$VERSION"
-	if [ ! -d "$FULL_DEST" ]; then
-		mkdir "$FULL_DEST"
-	fi
-else
-	FULL_DEST="$DEST"
-fi
 
 SKIP_ARG=""
 if [ $SKIP_DOWNLOAD = true ]; then
@@ -111,12 +97,12 @@ else
 	echo "Missing $MISSING expected build tools, continuing anyway"
 fi
 
-echo "Building to $FULL_DEST"
+echo "Building to $DEST"
 
 # Create the required source and build directories
-SOURCE_DIR="${FULL_DEST%/}/source/"
-BUILD_DIR="${FULL_DEST%/}/build/"
-ROOT_BUILD_DIR="${FULL_DEST%/}/root_build/"
+SOURCE_DIR="${DEST%/}/source/"
+BUILD_DIR="${DEST%/}/build/"
+ROOT_BUILD_DIR="${DEST%/}/root_build/"
 if [ ! -d "$SOURCE_DIR" ]; then
 	mkdir "$SOURCE_DIR"
 fi
@@ -129,20 +115,20 @@ fi
 
 # Run build scripts from this script's directory
 cd "$SCRIPT_DIR"
-./build_CMake.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
-./build_FFTW.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
-./build_GSL.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
-./build_SQLite.sh --dest "$FULL_DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 104 "Failed SQLite build"
-./build_boost.sh --dest "$FULL_DEST" $SKIP_ARG $CLEAN_SOURCE || error 105 "Failed boost build"
-./build_ROOT6.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 106 "Failed ROOT6 build"
-./build_libRootFftwWrapper.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
-./build_AraRoot.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
-./build_AraSim.sh --dest "$FULL_DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
+./build_CMake.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
+./build_FFTW.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
+./build_GSL.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
+./build_SQLite.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 104 "Failed SQLite build"
+./build_boost.sh --dest "$DEST" $SKIP_ARG $CLEAN_SOURCE || error 105 "Failed boost build"
+./build_ROOT6.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 106 "Failed ROOT6 build"
+./build_libRootFftwWrapper.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
+./build_AraRoot.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
+./build_AraSim.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
 
 # Hardcode destination path in the setup script
 if [ $SKIP_BUILD = false ]; then
 	echo "Recording installation path in setup script"
-	sed -i s:/PATH/TO/THIS/SCRIPT:$FULL_DEST: "$FULL_DEST/setup.sh"
+	sed -i s:/PATH/TO/THIS/SCRIPT:$DEST: "$DEST/setup.sh"
 fi
 
 echo "Finished building ARA software"
