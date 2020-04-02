@@ -121,10 +121,12 @@ if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
 	make "$MAKE_ARG" || exit 31
-	make "$MAKE_ARG" -f M.readTree || exit 32
-	make "$MAKE_ARG" -f M.readGeom || exit 33
 	cp AraSim "${BUILD_DIR%/}/bin/AraSim"
+	cp libAra.so "${BUILD_DIR%/}/lib/libAra.so"
+	cp eventSimDict_rdict.pcm "${BUILD_DIR%/}/lib/eventSimDict_rdict.pcm"
+	make "$MAKE_ARG" -f M.readTree || exit 32
 	cp readTree "${BUILD_DIR%/}/bin/readTree"
+	make "$MAKE_ARG" -f M.readGeom || exit 33
 	cp readGeom "${BUILD_DIR%/}/bin/readGeom"
 fi
 
