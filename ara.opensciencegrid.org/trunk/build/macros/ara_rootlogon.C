@@ -11,6 +11,7 @@
 	gSystem->Load("libAraConfig.so");
 	gSystem->Load("libAraDisplay.so");
 	gSystem->Load("libAraCorrelator.so");
+	gSystem->Load("libAraVertex.so");
 	gSystem->AddIncludePath("-I${ARA_UTIL_INSTALL_DIR}/include");
 	gSystem->AddIncludePath("-I${ARA_UTIL_INSTALL_DIR}/lib");
 	gSystem->AddIncludePath("-I FFTtools.h");
