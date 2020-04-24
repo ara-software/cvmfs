@@ -1,12 +1,10 @@
 # builders/trunk
 
-Build scripts for the trunk version of ARA software.
+Build scripts for the trunk version of the ARA software.
 
 ## How to build software
 
 To build the entire ARA software stack, run `build.sh --dest DESTINATION_DIRECTORY` where `DESTINATION_DIRECTORY` is the directory where all the source and build files will be kept. There are additional options than can be passed to the script for more detailed installation:
-
-`build.sh --dest DESTINATION_DIRECTORY --version VERSION` will install the software in `DESTINATION_DIRECTORY/VERSION` (to allow easy code freezing).
 
 `build.sh --dest DESTINATION_DIRECTORY --dryrun` will perform a dryrun of the installation, creating a bare directory structure without downloading or installing any of the software.
 
