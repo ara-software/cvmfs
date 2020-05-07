@@ -14,7 +14,7 @@ export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
 export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
 export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
 
-# Avoid using `source` since apparently it's not a POSIX feature
+# Run thisroot.sh using `.` instead of `source` to improve POSIX compatibility
 . "${ARA_SETUP_DIR%/}/root_build/bin/thisroot.sh"
 
 export SQLITE_ROOT="$ARA_UTIL_INSTALL_DIR"
