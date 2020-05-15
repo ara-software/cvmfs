@@ -101,13 +101,17 @@ echo "Building to $DEST"
 
 # Create the required source and build directories
 SOURCE_DIR="${DEST%/}/source/"
-BUILD_DIR="${DEST%/}/build/"
+ARA_BUILD_DIR="${DEST%/}/ara_build/"
+DEPS_BUILD_DIR="${DEST%/}/misc_build/"
 ROOT_BUILD_DIR="${DEST%/}/root_build/"
 if [ ! -d "$SOURCE_DIR" ]; then
 	mkdir "$SOURCE_DIR"
 fi
-if [ ! -d "$BUILD_DIR" ]; then
-	mkdir "$BUILD_DIR"
+if [ ! -d "$ARA_BUILD_DIR" ]; then
+	mkdir "$ARA_BUILD_DIR"
+fi
+if [ ! -d "$DEPS_BUILD_DIR" ]; then
+	mkdir "$DEPS_BUILD_DIR"
 fi
 if [ ! -d "$ROOT_BUILD_DIR" ]; then
 	mkdir "$ROOT_BUILD_DIR"
@@ -115,15 +119,15 @@ fi
 
 # Run build scripts from this script's directory
 cd "$SCRIPT_DIR"
-./build_CMake.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
-./build_FFTW.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
-./build_GSL.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
-./build_SQLite.sh --dest "$DEST" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 104 "Failed SQLite build"
-./build_boost.sh --dest "$DEST" $SKIP_ARG $CLEAN_SOURCE || error 105 "Failed boost build"
-./build_ROOT6.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 106 "Failed ROOT6 build"
-./build_libRootFftwWrapper.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
-./build_AraRoot.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
-./build_AraSim.sh --dest "$DEST" --root "$ROOT_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
+./build_CMake.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
+./build_FFTW.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
+./build_GSL.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
+./build_SQLite.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 104 "Failed SQLite build"
+./build_boost.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $SKIP_ARG $CLEAN_SOURCE || error 105 "Failed boost build"
+./build_ROOT6.sh --source "$SOURCE_DIR" --build "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 106 "Failed ROOT6 build"
+./build_libRootFftwWrapper.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
+./build_AraRoot.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
+./build_AraSim.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
 
 # Hardcode destination path in the setup script
 if [ $SKIP_BUILD = false ]; then

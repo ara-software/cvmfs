@@ -1,5 +1,5 @@
 #!/bin/sh
-# Setup script for trunk version of ARA software
+# Setup script for trunk version of the ARA software
 
 export ARA_SETUP_DIR="/PATH/TO/THIS/SCRIPT"
 # If the fake path in ARA_SETUP_DIR wasn't replaced, try the working directory
@@ -7,31 +7,32 @@ if [ ! -d "$ARA_SETUP_DIR" ]; then
 	export ARA_SETUP_DIR=$(pwd)
 fi
 
-export ARA_UTIL_INSTALL_DIR="${ARA_SETUP_DIR%/}/build"
+export ARA_UTIL_INSTALL_DIR="${ARA_SETUP_DIR%/}/ara_build"
+export ARA_DEPS_INSTALL_DIR="${ARA_SETUP_DIR%/}/misc_build"
 export ARA_ROOT_DIR="${ARA_SETUP_DIR%/}/source/AraRoot"
 
-export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
-export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
-export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
+export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$ARA_DEPS_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$ARA_DEPS_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
+export PATH="$ARA_UTIL_INSTALL_DIR/bin:$ARA_DEPS_INSTALL_DIR/bin:$PATH"
 
-# Avoid using `source` since apparently it's not a POSIX feature
+# Run thisroot.sh using `.` instead of `source` to improve POSIX compatibility
 . "${ARA_SETUP_DIR%/}/root_build/bin/thisroot.sh"
 
-export SQLITE_ROOT="$ARA_UTIL_INSTALL_DIR"
-export GSL_ROOT="$ARA_UTIL_INSTALL_DIR"
-#export FFTW_LIBRARIES="$ARA_UTIL_INSTALL_DIR"
-export FFTWSYS="$ARA_UTIL_INSTALL_DIR"
+export SQLITE_ROOT="$ARA_DEPS_INSTALL_DIR"
+export GSL_ROOT="$ARA_DEPS_INSTALL_DIR"
+#export FFTW_LIBRARIES="$ARA_DEPS_INSTALL_DIR"
+export FFTWSYS="$ARA_DEPS_INSTALL_DIR"
 
-export BOOST_ROOT="$ARA_UTIL_INSTALL_DIR"
-#export BOOST_LIB="$ARA_UTIL_INSTALL_DIR/lib"
+export BOOST_ROOT="$ARA_DEPS_INSTALL_DIR"
+#export BOOST_LIB="$ARA_DEPS_INSTALL_DIR/lib"
 #export LD_LIBRARY_PATH="$BOOST_LIB:$LD_LIBRARY_PATH"
 #export DYLD_LIBRARY_PATH="$BOOST_LIB:$DYLD_LIBRARY_PATH"
 
-export CMAKE_PREFIX_PATH="$ARA_UTIL_INSTALL_DIR"
+export CMAKE_PREFIX_PATH="$ARA_DEPS_INSTALL_DIR"
 
 
 # Warn about incompatible gcc versions
-export ARA_GCC_VERSION=$(strings -a "$ARA_UTIL_INSTALL_DIR/bin/AraSim" | grep "GCC: (" | head -1 | cut -d " " -f 3)
+export ARA_GCC_VERSION=$(strings -a "${ARA_SETUP_DIR%/}/source/AraSim/AraSim" | grep "GCC: (" | head -1 | cut -d " " -f 3)
 export SYS_GCC_VERSION=$($(command -v gcc) --version | head -1 | cut -d " " -f 3)
 if [ "$ARA_GCC_VERSION" = "4.8.5" ]; then
 	case $SYS_GCC_VERSION in
