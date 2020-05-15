@@ -8,12 +8,13 @@ PACKAGE_DIR_NAME="AraSim"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-r destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-r directory] [--deps directory] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  -r, --root destination          set the root build destination directory"
+	echo "  -r, --root destination          set the root build directory"
+	echo "  --deps directory                set the dependency build directory"
 	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
@@ -46,6 +47,10 @@ while [ "$1" != "" ]; do
 			shift
 			ROOT_BUILD_DIR="$1"
 		;;
+		--deps )
+			shift
+			DEPS_BUILD_DIR="$1"
+		;;
 		--skip_download )
 			SKIP_DOWNLOAD=true
 		;;
@@ -76,6 +81,10 @@ if [ "$DEST" != "" ]; then
 	fi
 fi
 
+if [ -z "$DEPS_BUILD_DIR" ]; then
+        DEPS_BUILD_DIR="$BUILD_DIR"
+fi
+
 if [ -z "$ROOT_BUILD_DIR" ]; then
 	ROOT_BUILD_DIR="$BUILD_DIR"
 fi
@@ -88,9 +97,13 @@ if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
 fi
+if [ ! -d "$DEPS_BUILD_DIR" ]; then
+        echo "Invalid dependency build directory: $DEPS_BUILD_DIR"
+        exit 4
+fi
 if [ ! -d "$ROOT_BUILD_DIR" ]; then
-	echo "Invalid root build destination directory: $ROOT_BUILD_DIR"
-	exit 4
+	echo "Invalid root build directory: $ROOT_BUILD_DIR"
+	exit 5
 fi
 
 
@@ -108,12 +121,13 @@ fi
 # Set required environment variables
 if [ $SKIP_BUILD = false ]; then
 	export ARA_UTIL_INSTALL_DIR="${BUILD_DIR%/}"
+	export ARA_DEPS_INSTALL_DIR="${DEPS_BUILD_DIR%/}"
 	export ARA_ROOT_DIR="${SOURCE_DIR%/}/AraRoot"
-	export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
-	export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
-	export PATH="$ARA_UTIL_INSTALL_DIR/bin:$PATH"
+	export LD_LIBRARY_PATH="$ARA_DEPS_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
+	export DYLD_LIBRARY_PATH="$ARA_DEPS_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
+	export PATH="$ARA_DEPS_INSTALL_DIR/bin:$PATH"
 	. "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
-	export BOOST_ROOT="$ARA_UTIL_INSTALL_DIR"
+	export BOOST_ROOT="$ARA_DEPS_INSTALL_DIR"
 fi
 
 # Run package installation
