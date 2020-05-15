@@ -14,6 +14,8 @@
 	gSystem->Load("libAraVertex.so");
 	gSystem->AddIncludePath("-I${ARA_UTIL_INSTALL_DIR}/include");
 	gSystem->AddIncludePath("-I${ARA_UTIL_INSTALL_DIR}/lib");
+	gSystem->AddIncludePath("-I${ARA_DEPS_INSTALL_DIR}/include");
+        gSystem->AddIncludePath("-I${ARA_DEPS_INSTALL_DIR}/lib");
 	gSystem->AddIncludePath("-I FFTtools.h");
 	gROOT->ProcessLine("#include <FFTtools.h>");
 
