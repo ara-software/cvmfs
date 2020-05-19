@@ -92,7 +92,7 @@ if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
 fi
-if [ ! -d "DEPS_BUILD_DIR" ]; then
+if [ ! -d "$DEPS_BUILD_DIR" ]; then
 	echo "Invalid dependency build directory: $DEPS_BUILD_DIR"
 	exit 4
 fi
