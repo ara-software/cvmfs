@@ -127,7 +127,7 @@ if [ $SKIP_BUILD = false ]; then
 	export DYLD_LIBRARY_PATH="$ARA_DEPS_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
 	export PATH="$ARA_DEPS_INSTALL_DIR/bin:$PATH"
 	. "${ROOT_BUILD_DIR%/}"/bin/thisroot.sh || exit 21
-	export BOOST_ROOT="$ARA_DEPS_INSTALL_DIR"
+	export BOOST_ROOT="$ARA_DEPS_INSTALL_DIR/include"
 fi
 
 # Run package installation
