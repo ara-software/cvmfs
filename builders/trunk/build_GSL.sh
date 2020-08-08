@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="GSL"
-DOWNLOAD_LINK="http://gnu.mirror.constant.com/gsl/gsl-2.5.tar.gz"
-PACKAGE_DIR_NAME="gsl-2.5"
+DOWNLOAD_LINK="http://gnu.mirror.constant.com/gsl/gsl-2.6.tar.gz"
+PACKAGE_DIR_NAME="gsl-2.6"
 
 
 usage() {

@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="boost"
-DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz"
-PACKAGE_DIR_NAME="boost_1_55_0"
+DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.73.0/boost_1_73_0.tar.gz"
+PACKAGE_DIR_NAME="boost_1_73_0"
 
 
 usage() {
