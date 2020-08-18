@@ -107,7 +107,12 @@ if [ $SKIP_BUILD = false ]; then
 	cd "$PACKAGE_DIR_NAME"
 	./configure --with-pydebug --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	make "$MAKE_ARG" || exit 32
+	if [ -z "$MAKE_ARG" ]
+	then
+		make || exit 32
+	else
+		make "$MAKE_ARG" || exit 32
+	fi 
 	make install "$MAKE_ARG" || exit 33
 
 	# we need to establish the "python" symlink
