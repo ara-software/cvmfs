@@ -85,7 +85,7 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-if [ ! -d "$PYDEPS_BUILD_DIR"]; then
+if [ ! -d "$PYDEPS_BUILD_DIR" ]; then
 	echo "Invalid python packages biuld directory: $PYDEPS_BUILD_DIR"
 	exit 4
 fi
