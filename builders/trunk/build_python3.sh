@@ -116,10 +116,10 @@ if [ $SKIP_BUILD = false ]; then
 	make install || exit 33
 
 	# we need to establish the "python" symlink
-	ln -s "$BUILD_DIR/bin/python3" python
+	ln -s "$BUILD_DIR/bin/python3" "$BUILD_DIR/bin/python"
 
 	# and install some dependencies
-	python -m pip install numpy --target "$PYDEPS_BUILD_DIR" || exit 34
+	$BUILD_DIR/bin/python -m pip install numpy --target "$PYDEPS_BUILD_DIR" || exit 34
 fi
 
 # Clean up source directory if requested
