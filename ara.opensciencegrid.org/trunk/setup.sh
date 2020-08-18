@@ -14,6 +14,7 @@ export ARA_ROOT_DIR="${ARA_SETUP_DIR%/}/source/AraRoot"
 export LD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$ARA_DEPS_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
 export DYLD_LIBRARY_PATH="$ARA_UTIL_INSTALL_DIR/lib:$ARA_DEPS_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
 export PATH="$ARA_UTIL_INSTALL_DIR/bin:$ARA_DEPS_INSTALL_DIR/bin:$PATH"
+export PYTHONPATH="$ARA_DEPS_INSTALL_DIR/pydeps:$PYTHONPATH"
 
 # Run thisroot.sh using `.` instead of `source` to improve POSIX compatibility
 . "${ARA_SETUP_DIR%/}/root_build/bin/thisroot.sh"
