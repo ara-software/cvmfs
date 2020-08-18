@@ -113,7 +113,7 @@ if [ $SKIP_BUILD = false ]; then
 	else
 		make "$MAKE_ARG" || exit 32
 	fi 
-	make install "$MAKE_ARG" || exit 33
+	make install || exit 33
 
 	# we need to establish the "python" symlink
 	ln -s "$BUILD_DIR/bin/python3" python
