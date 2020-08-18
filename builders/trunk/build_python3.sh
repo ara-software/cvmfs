@@ -105,7 +105,7 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --with-pydebug --prefix="$BUILD_DIR" || exit 31
+	./configure --enable-shared --with-pydebug --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	if [ -z "$MAKE_ARG" ]
 	then
@@ -115,11 +115,12 @@ if [ $SKIP_BUILD = false ]; then
 	fi 
 	make install || exit 33
 
-	# we need to establish the "python" symlink
+	# establish the "python" symlink
 	ln -s "$BUILD_DIR/bin/python3" "$BUILD_DIR/bin/python"
 
-	# and install some dependencies
-	$BUILD_DIR/bin/python -m pip install numpy --target "$PYDEPS_BUILD_DIR" || exit 34
+	# pip install some dependencies
+	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
+	$BUILD_DIR/bin/pip3 install matplotlib numpy pandas scipy || exit 34
 fi
 
 # Clean up source directory if requested
