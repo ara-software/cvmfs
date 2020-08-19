@@ -110,7 +110,7 @@ if [ $SKIP_BUILD = false ]; then
 
 	# pip install some needed python packages
 	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
-	$BUILD_DIR/bin/pip3 install matplotlib numpy pandas scipy || exit 34
+	$BUILD_DIR/bin/pip3 install h5py gnureadline matplotlib numpy pandas scipy || exit 34
 fi
 
 # Clean up source directory if requested
