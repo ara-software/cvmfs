@@ -8,12 +8,11 @@ PACKAGE_DIR_NAME="py3.8.5"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--pydeps directory] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --pydeps directory              set the directory for where to pip install python packages"
 	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
@@ -48,10 +47,6 @@ while [ "$1" != "" ]; do
 		--skip_build )
 			SKIP_BUILD=true
 		;;
-		--pydeps )
-			shift
-			PYDEPS_BUILD_DIR="$1"
-		;;
 		--make_arg )
 			shift
 			MAKE_ARG="$1"
@@ -85,11 +80,6 @@ if [ ! -d "$BUILD_DIR" ]; then
 	exit 3
 fi
 
-if [ ! -d "$PYDEPS_BUILD_DIR" ]; then
-	echo "Invalid python packages biuld directory: $PYDEPS_BUILD_DIR"
-	exit 4
-fi
-
 # Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
@@ -118,7 +108,7 @@ if [ $SKIP_BUILD = false ]; then
 	# establish the "python" symlink
 	ln -s "$BUILD_DIR/bin/python3" "$BUILD_DIR/bin/python"
 
-	# pip install some dependencies
+	# pip install some needed python packages
 	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
 	$BUILD_DIR/bin/pip3 install matplotlib numpy pandas scipy || exit 34
 fi

@@ -103,7 +103,6 @@ echo "Building to $DEST"
 SOURCE_DIR="${DEST%/}/source/"
 ARA_BUILD_DIR="${DEST%/}/ara_build/"
 DEPS_BUILD_DIR="${DEST%/}/misc_build/"
-PYDEPS_BUILD_DIR="${DEPS_BUILD_DIR%/}/pydeps/"
 ROOT_BUILD_DIR="${DEST%/}/root_build/"
 if [ ! -d "$SOURCE_DIR" ]; then
 	mkdir "$SOURCE_DIR"
@@ -117,13 +116,10 @@ fi
 if [ ! -d "$ROOT_BUILD_DIR" ]; then
 	mkdir "$ROOT_BUILD_DIR"
 fi
-if [ ! -d "$PYDEPS_BUILD_DIR" ]; then
-	mkdir "$PYDEPS_BUILD_DIR"
-fi
 
 # Run build scripts from this script's directory
 cd "$SCRIPT_DIR"
-./build_python3.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" --pydeps "$PYDEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 100 "Failed python3 build"
+./build_python3.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 100 "Failed python3 build"
 ./build_CMake.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
 ./build_FFTW.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
 ./build_GSL.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
