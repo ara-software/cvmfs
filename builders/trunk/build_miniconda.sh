@@ -101,7 +101,7 @@ if [ $SKIP_BUILD = false ]; then
 
 	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)"
 
-	conda install gnureadline h5py matplotlib numpy pandas scipy
+	conda install h5py matplotlib numpy pandas scipy
 fi
 
 # Clean up source directory if requested
