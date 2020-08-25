@@ -84,7 +84,7 @@ fi
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
 	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
-	wget "$DOWNLOAD_LINK" -O "PACKAGE_DIR_NAME" || exit 11
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME" || exit 11
 	# wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
 	# echo "Extracting $PACKAGE_NAME"
 	# mkdir "$PACKAGE_DIR_NAME"
@@ -97,11 +97,11 @@ if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
 
-	bash miniconda.sh -b -p $BUILD_DIR/miniconda
+	bash miniconda.sh -b -p $BUILD_DIR/miniconda || exit 31
 
-	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)"
+	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)" || exit 32
 
-	conda install h5py matplotlib numpy pandas scipy
+	conda install h5py matplotlib numpy pandas scipy || exit 33
 fi
 
 # Clean up source directory if requested
