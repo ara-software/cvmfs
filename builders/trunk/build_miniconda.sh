@@ -100,7 +100,7 @@ if [ $SKIP_BUILD = false ]; then
 
 	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)" || exit 32
 
-	conda install h5py matplotlib numpy pandas scipy || exit 33
+	conda install -y h5py matplotlib numpy pandas scipy || exit 33
 fi
 
 # Clean up source directory if requested
