@@ -1,19 +1,18 @@
 #!/bin/sh
-# Build script for ROOT6
+# Build script for python3
 
 # Set script parameters
-PACKAGE_NAME="ROOT6"
-DOWNLOAD_LINK="https://root.cern/download/root_v6.22.02.source.tar.gz"
-PACKAGE_DIR_NAME="root-6.22.02"
+PACKAGE_NAME="miniconda"
+DOWNLOAD_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+PACKAGE_DIR_NAME="miniconda.sh"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--deps directory] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --deps directory                set the dependency build directory"
 	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
@@ -41,10 +40,6 @@ while [ "$1" != "" ]; do
 		-b | --build )
 			shift
 			BUILD_DIR="$1"
-		;;
-		--deps )
-			shift
-			DEPS_BUILD_DIR="$1"
 		;;
 		--skip_download )
 			SKIP_DOWNLOAD=true
@@ -76,10 +71,6 @@ if [ "$DEST" != "" ]; then
 	fi
 fi
 
-if [ -z "$DEPS_BUILD_DIR" ]; then
-	DEPS_BUILD_DIR="$BUILD_DIR"
-fi
-
 if [ ! -d "$SOURCE_DIR" ]; then
 	echo "Invalid source destination directory: $SOURCE_DIR"
 	exit 2
@@ -88,40 +79,29 @@ if [ ! -d "$BUILD_DIR" ]; then
 	echo "Invalid build destination directory: $BUILD_DIR"
 	exit 3
 fi
-if [ ! -d "$DEPS_BUILD_DIR" ]; then
-	echo "Invalid dependency build directory: $DEPS_BUILD_DIR"
-	exit 4
-fi
-
 
 # Download and unzip the package
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
 	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
-	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
-	echo "Extracting $PACKAGE_NAME"
-	mkdir "$PACKAGE_DIR_NAME"
-	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
-	rm "$PACKAGE_DIR_NAME.tar.gz"
-fi
-
-# Set required environment variables
-if [ $SKIP_BUILD = false ]; then
-	export ARA_DEPS_INSTALL_DIR="${DEPS_BUILD_DIR%/}"
-	export LD_LIBRARY_PATH="$ARA_DEPS_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
-	export DYLD_LIBRARY_PATH="$ARA_DEPS_INSTALL_DIR/lib:$DYLD_LIBRARY_PATH"
-	export PATH="$ARA_DEPS_INSTALL_DIR/bin:$PATH"
-	export CMAKE_PREFIX_PATH="$ARA_DEPS_INSTALL_DIR"
+	wget "$DOWNLOAD_LINK" -O "PACKAGE_DIR_NAME" || exit 11
+	# wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	# echo "Extracting $PACKAGE_NAME"
+	# mkdir "$PACKAGE_DIR_NAME"
+	# tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	# rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
-	cd "$BUILD_DIR"
-	# cmake -Dminuit2:bool=true -DPYTHON_EXECUTABLE="${ARA_DEPS_INSTALL_DIR}/bin/python" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
-	cmake -Dminuit2:bool=true -DPYTHON_EXECUTABLE="${ARA_DEPS_INSTALL_DIR}/miniconda/bin/python" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
-	echo "Installing $PACKAGE_NAME"
-	make "$MAKE_ARG" || exit 32
+	cd "$PACKAGE_DIR_NAME"
+
+	bash miniconda.sh -b -p $BUILD_DIR/miniconda
+
+	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)"
+
+	conda install gnureadline h5py matplotlib numpy pandas scipy
 fi
 
 # Clean up source directory if requested
