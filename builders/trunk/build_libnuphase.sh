@@ -6,9 +6,6 @@ PACKAGE_NAME="libnuphase"
 DOWNLOAD_LINK="https://github.com/vPhase/libnuphase/archive/master.tar.gz"
 PACKAGE_DIR_NAME="libnuphase"
 
-# will need to sed in order to turn curl off
-# also need to sed in order to change the installation PREFIX
-
 usage() {
 	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [-r directory] [--deps directory] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
