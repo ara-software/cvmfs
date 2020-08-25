@@ -95,7 +95,6 @@ fi
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
-	cd "$PACKAGE_DIR_NAME"
 
 	bash miniconda.sh -b -p $BUILD_DIR/miniconda || exit 31
 
