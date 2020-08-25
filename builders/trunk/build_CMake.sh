@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="CMake"
-DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1.tar.gz"
-PACKAGE_DIR_NAME="cmake-3.18.1"
+DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2.tar.gz"
+PACKAGE_DIR_NAME="cmake-3.18.2"
 
 
 usage() {
