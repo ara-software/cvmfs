@@ -119,6 +119,8 @@ fi
 
 # Run build scripts from this script's directory
 cd "$SCRIPT_DIR"
+./build_python3.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 100 "Failed python3 build"
+#./build_miniconda.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 100 "Failed python3 build"
 ./build_CMake.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 101 "Failed CMake build"
 ./build_FFTW.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 102 "Failed FFTW build"
 ./build_GSL.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG $CLEAN_SOURCE || error 103 "Failed GSL build"
@@ -128,6 +130,8 @@ cd "$SCRIPT_DIR"
 ./build_libRootFftwWrapper.sh --source "$SOURCE_DIR" --build "$DEPS_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 107 "Failed libRootFftwWrapper build"
 ./build_AraRoot.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $SKIP_ARG || error 108 "Failed AraRoot build"
 ./build_AraSim.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $MAKE_ARG $SKIP_ARG || error 109 "Failed AraSim build"
+./build_libnuphase.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $SKIP_ARG || error 110 "Failed libnuphase build"
+./build_nuphaseroot.sh --source "$SOURCE_DIR" --build "$ARA_BUILD_DIR" --root "$ROOT_BUILD_DIR" --deps "$DEPS_BUILD_DIR" $SKIP_ARG || error 111 "Failed nuphaseroot build"
 
 # Hardcode destination path in the setup script
 if [ $SKIP_BUILD = false ]; then

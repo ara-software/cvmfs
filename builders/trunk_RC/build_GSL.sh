@@ -1,10 +1,10 @@
 #!/bin/sh
-# Build script for CMake
+# Build script for GSL
 
 # Set script parameters
-PACKAGE_NAME="CMake"
-DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz"
-PACKAGE_DIR_NAME="cmake-3.13.4"
+PACKAGE_NAME="GSL"
+DOWNLOAD_LINK="http://gnu.mirror.constant.com/gsl/gsl-2.6.tar.gz"
+PACKAGE_DIR_NAME="gsl-2.6"
 
 
 usage() {
@@ -18,7 +18,6 @@ usage() {
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
 }
-
 
 # Parse command line options
 SKIP_DOWNLOAD=false
@@ -96,7 +95,7 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --prefix="$BUILD_DIR" || exit 31
+	./configure CFLAGS=-m64 --with-pic --enable-shared --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 	make install "$MAKE_ARG" || exit 33

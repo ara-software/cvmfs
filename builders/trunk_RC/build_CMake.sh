@@ -1,22 +1,24 @@
 #!/bin/sh
-# Build script for boost
+# Build script for CMake
 
 # Set script parameters
-PACKAGE_NAME="boost"
-DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz"
-PACKAGE_DIR_NAME="boost_1_55_0"
+PACKAGE_NAME="CMake"
+DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.18.2/cmake-3.18.2.tar.gz"
+PACKAGE_DIR_NAME="cmake-3.18.2"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
+	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
 }
+
 
 # Parse command line options
 SKIP_DOWNLOAD=false
@@ -45,6 +47,10 @@ while [ "$1" != "" ]; do
 		;;
 		--skip_build )
 			SKIP_BUILD=true
+		;;
+		--make_arg )
+			shift
+			MAKE_ARG="$1"
 		;;
 		--clean_source)
 			CLEAN_SOURCE=true
@@ -90,9 +96,10 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
+	./configure --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	./bjam install || exit 32
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
 # Clean up source directory if requested
