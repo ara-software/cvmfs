@@ -92,7 +92,10 @@ if [ $SKIP_BUILD = false ]; then
 	cd "$PACKAGE_DIR_NAME"
 	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	./b2 install -j 4 #|| exit 32 # We'll allow some compilation errors here, evidently they don't cause issues
+	./b2 -j 4
+	./b2 install
+	#./b2 -j4 install
+	#./b2 install -j 4 #|| exit 32 # We'll allow some compilation errors here, evidently they don't cause issues
 fi
 
 # Clean up source directory if requested
