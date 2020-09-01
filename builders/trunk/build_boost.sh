@@ -8,15 +8,17 @@ PACKAGE_DIR_NAME="boost_1_74_0"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
+	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
 }
+
 
 # Parse command line options
 SKIP_DOWNLOAD=false
@@ -45,6 +47,10 @@ while [ "$1" != "" ]; do
 		;;
 		--skip_build )
 			SKIP_BUILD=true
+		;;
+		--make_arg )
+			shift
+			MAKE_ARG="$1"
 		;;
 		--clean_source)
 			CLEAN_SOURCE=true
@@ -92,10 +98,26 @@ if [ $SKIP_BUILD = false ]; then
 	cd "$PACKAGE_DIR_NAME"
 	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	./b2 -j 4
+	
+	# It is important in boost versions > 1.73 to check for make args
+	# and to manually specify the number of cores to use (to 1)
+	# in the case that the the user does not specify for us.
+	# This is becuase in boost > 1.73, the default number of
+	# jobs/threads used in the compile is set to the number of available cpu threads.
+	# But the Boost manual warns us that "There are circumstances when that default can be larger 
+	# than the allocated cpu resources, for instance in some virtualized container installs."
+	# Because the buildbost for cvmfs is done in a container, we will run into a 
+	# problem where the builder will try and use cores that are allocated outside
+	# the container. So we must protect against this by having a "fall-back"
+	# option where we allow it access to only 1 core, unless the user specifies otherwise.
+
+	if [ -z "$MAKE_ARG" ]
+	then
+		./b2 "$MAKE_ARG"
+	else
+		./b1 -j 1
+	fi
 	./b2 install
-	#./b2 -j4 install
-	#./b2 install -j 4 #|| exit 32 # We'll allow some compilation errors here, evidently they don't cause issues
 fi
 
 # Clean up source directory if requested
