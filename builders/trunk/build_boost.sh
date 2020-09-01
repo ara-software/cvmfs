@@ -111,11 +111,13 @@ if [ $SKIP_BUILD = false ]; then
 	# the container. So we must protect against this by having a "fall-back"
 	# option where we allow it access to only 1 core, unless the user specifies otherwise.
 
+	echo "make arg is $MAKE_ARG"
+
 	if [ -z "$MAKE_ARG" ]
 	then
-		./b2 "$MAKE_ARG"
+		./b2 -j 1
 	else
-		./b1 -j 1
+		./b2 "$MAKE_ARG"		
 	fi
 	./b2 install
 fi
