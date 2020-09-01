@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="AraRoot"
-DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/master.tar.gz"
+DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/187d9534947b5dc26b69986ba97ebe1775305c2c.tar.gz"
 PACKAGE_DIR_NAME="AraRoot"
 
 

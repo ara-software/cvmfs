@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="AraSim"
-DOWNLOAD_LINK="https://github.com/ara-software/AraSim/archive/master.tar.gz"
+DOWNLOAD_LINK="https://github.com/ara-software/AraSim/archive/4108ec3616ba8e9561e0fbd3c47c08a0d48eb8f7.tar.gz"
 PACKAGE_DIR_NAME="AraSim"
 
 
