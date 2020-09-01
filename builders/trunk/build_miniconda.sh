@@ -1,10 +1,10 @@
 #!/bin/sh
-# Build script for SQLite
+# Build script for python3
 
 # Set script parameters
-PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+PACKAGE_NAME="miniconda"
+DOWNLOAD_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+PACKAGE_DIR_NAME="miniconda.sh"
 
 
 usage() {
@@ -84,21 +84,23 @@ fi
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
 	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
-	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
-	echo "Extracting $PACKAGE_NAME"
-	mkdir "$PACKAGE_DIR_NAME"
-	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
-	rm "$PACKAGE_DIR_NAME.tar.gz"
+	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME" || exit 11
+	# wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
+	# echo "Extracting $PACKAGE_NAME"
+	# mkdir "$PACKAGE_DIR_NAME"
+	# tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
+	# rm "$PACKAGE_DIR_NAME.tar.gz"
 fi
 
 # Run package installation
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
-	cd "$PACKAGE_DIR_NAME"
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
-	echo "Installing $PACKAGE_NAME"
-	make "$MAKE_ARG" || exit 32
-	make install "$MAKE_ARG" || exit 33
+
+	bash miniconda.sh -b -p $BUILD_DIR/miniconda || exit 31
+
+	eval "$($BUILD_DIR/miniconda/bin/conda shell.bash hook)" || exit 32
+
+	conda install -y h5py matplotlib numpy pandas scipy || exit 33
 fi
 
 # Clean up source directory if requested

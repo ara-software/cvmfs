@@ -1,19 +1,18 @@
 #!/bin/sh
-# Build script for SQLite
+# Build script for boost
 
 # Set script parameters
-PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+PACKAGE_NAME="boost"
+DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz"
+PACKAGE_DIR_NAME="boost_1_55_0"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
-	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
@@ -46,10 +45,6 @@ while [ "$1" != "" ]; do
 		;;
 		--skip_build )
 			SKIP_BUILD=true
-		;;
-		--make_arg )
-			shift
-			MAKE_ARG="$1"
 		;;
 		--clean_source)
 			CLEAN_SOURCE=true
@@ -95,10 +90,9 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
+	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	make "$MAKE_ARG" || exit 32
-	make install "$MAKE_ARG" || exit 33
+	./bjam install || exit 32
 fi
 
 # Clean up source directory if requested

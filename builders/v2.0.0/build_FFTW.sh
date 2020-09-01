@@ -1,10 +1,10 @@
 #!/bin/sh
-# Build script for SQLite
+# Build script for FFTW
 
 # Set script parameters
-PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+PACKAGE_NAME="FFTW"
+DOWNLOAD_LINK="http://www.fftw.org/fftw-3.3.8.tar.gz"
+PACKAGE_DIR_NAME="fftw-3.3.8"
 
 
 usage() {
@@ -95,7 +95,7 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
+	./configure --enable-shared --disable-fortran --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 	make install "$MAKE_ARG" || exit 33

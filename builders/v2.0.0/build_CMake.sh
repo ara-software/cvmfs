@@ -1,10 +1,10 @@
 #!/bin/sh
-# Build script for SQLite
+# Build script for CMake
 
 # Set script parameters
-PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+PACKAGE_NAME="CMake"
+DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz"
+PACKAGE_DIR_NAME="cmake-3.13.4"
 
 
 usage() {
@@ -18,6 +18,7 @@ usage() {
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
 }
+
 
 # Parse command line options
 SKIP_DOWNLOAD=false
@@ -95,7 +96,7 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
+	./configure --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 	make install "$MAKE_ARG" || exit 33

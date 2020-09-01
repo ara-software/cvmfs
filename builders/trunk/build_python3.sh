@@ -1,10 +1,10 @@
 #!/bin/sh
-# Build script for SQLite
+# Build script for python3
 
 # Set script parameters
-PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+PACKAGE_NAME="python3"
+DOWNLOAD_LINK="https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tgz"
+PACKAGE_DIR_NAME="py3.8.5"
 
 
 usage() {
@@ -95,10 +95,22 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
+	./configure --enable-shared --with-pydebug --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	make "$MAKE_ARG" || exit 32
-	make install "$MAKE_ARG" || exit 33
+	if [ -z "$MAKE_ARG" ]
+	then
+		make || exit 32
+	else
+		make "$MAKE_ARG" || exit 32
+	fi 
+	make install || exit 33
+
+	# establish the "python" symlink
+	ln -s "$BUILD_DIR/bin/python3" "$BUILD_DIR/bin/python"
+
+	# pip install some needed python packages
+	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
+	$BUILD_DIR/bin/pip3 install gnureadline h5py iminuit matplotlib numpy pandas scipy || exit 34
 fi
 
 # Clean up source directory if requested
