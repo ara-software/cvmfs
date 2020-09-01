@@ -30,11 +30,6 @@ export BOOST_ROOT="$ARA_DEPS_INSTALL_DIR/include"
 
 export CMAKE_PREFIX_PATH="$ARA_DEPS_INSTALL_DIR"
 
-export NUPHASE_INSTALL_DIR="$ARA_UTIL_INSTALL_DIR"
-
-# activate python environment
-#eval "$($ARA_DEPS_INSTALL_DIR/miniconda/bin/conda shell.bash hook)"
-
 
 # Warn about incompatible gcc versions
 export ARA_GCC_VERSION=$(strings -a "${ARA_SETUP_DIR%/}/source/AraSim/AraSim" | grep "GCC: (" | head -1 | cut -d " " -f 3)

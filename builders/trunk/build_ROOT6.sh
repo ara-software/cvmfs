@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="ROOT6"
-DOWNLOAD_LINK="https://root.cern/download/root_v6.16.00.source.tar.gz"
-PACKAGE_DIR_NAME="root-6.16.00"
+DOWNLOAD_LINK="https://root.cern/download/root_v6.22.02.source.tar.gz"
+PACKAGE_DIR_NAME="root-6.22.02"
 
 
 usage() {
@@ -118,7 +118,8 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$BUILD_DIR"
-	cmake -Dminuit2:bool=true "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
+	cmake -Dminuit2:bool=true -DPYTHON_EXECUTABLE="${ARA_DEPS_INSTALL_DIR}/bin/python" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
+	# cmake -Dminuit2:bool=true -DPYTHON_EXECUTABLE="${ARA_DEPS_INSTALL_DIR}/miniconda/bin/python" "${SOURCE_DIR%/}/$PACKAGE_DIR_NAME" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 fi

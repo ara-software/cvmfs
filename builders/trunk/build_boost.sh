@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="boost"
-DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz"
-PACKAGE_DIR_NAME="boost_1_55_0"
+DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.74.0/boost_1_74_0.tar.gz"
+PACKAGE_DIR_NAME="boost_1_74_0"
 
 
 usage() {
@@ -92,7 +92,10 @@ if [ $SKIP_BUILD = false ]; then
 	cd "$PACKAGE_DIR_NAME"
 	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	./bjam install || exit 32
+	./b2 -j 4
+	./b2 install
+	#./b2 -j4 install
+	#./b2 install -j 4 #|| exit 32 # We'll allow some compilation errors here, evidently they don't cause issues
 fi
 
 # Clean up source directory if requested

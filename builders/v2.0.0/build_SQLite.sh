@@ -1,18 +1,19 @@
 #!/bin/sh
-# Build script for boost
+# Build script for SQLite
 
 # Set script parameters
-PACKAGE_NAME="boost"
-DOWNLOAD_LINK="https://sourceforge.net/projects/boost/files/boost/1.74.0/boost_1_74_0.tar.gz"
-PACKAGE_DIR_NAME="boost_1_74_0"
+PACKAGE_NAME="SQLite"
+DOWNLOAD_LINK="https://sqlite.org/2019/sqlite-autoconf-3270200.tar.gz"
+PACKAGE_DIR_NAME="sqlite-autoconf-3270200"
 
 
 usage() {
-	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--skip_download, --skip_build] [--clean_source]"
+	echo "usage: $0 [-h] [-d destination] [-s destination] [-b destination] [--make_arg argument] [--skip_download, --skip_build] [--clean_source]"
 	echo "  -h, --help                      display this help message"
 	echo "  -d, --dest destination          set the destination directory (containing source and build directories)"
 	echo "  -s, --source destination        set the source destination directory"
 	echo "  -b, --build destination         set the build destination directory"
+	echo "  --make_arg argument             additional argument to be passed to make"
 	echo "  --skip_download                 $PACKAGE_NAME exists pre-downloaded at the source destination"
 	echo "  --skip_build                    $PACKAGE_NAME has already been built at the build destination"
 	echo "  --clean_source                  remove source directory after build"
@@ -45,6 +46,10 @@ while [ "$1" != "" ]; do
 		;;
 		--skip_build )
 			SKIP_BUILD=true
+		;;
+		--make_arg )
+			shift
+			MAKE_ARG="$1"
 		;;
 		--clean_source)
 			CLEAN_SOURCE=true
@@ -90,12 +95,10 @@ fi
 if [ $SKIP_BUILD = false ]; then
 	echo "Compiling $PACKAGE_NAME"
 	cd "$PACKAGE_DIR_NAME"
-	./bootstrap.sh --without-libraries=python --prefix="${BUILD_DIR%/}" || exit 31
+	./configure --enable-shared --prefix="$BUILD_DIR" || exit 31
 	echo "Installing $PACKAGE_NAME"
-	./b2 -j 4
-	./b2 install
-	#./b2 -j4 install
-	#./b2 install -j 4 #|| exit 32 # We'll allow some compilation errors here, evidently they don't cause issues
+	make "$MAKE_ARG" || exit 32
+	make install "$MAKE_ARG" || exit 33
 fi
 
 # Clean up source directory if requested
