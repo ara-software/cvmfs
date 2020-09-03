@@ -105,8 +105,9 @@ if [ $SKIP_BUILD = false ]; then
 	fi 
 	make install || exit 33
 
-	# establish the "python" symlink
+	# establish the "python" and "pip" symlinks
 	ln -s "$BUILD_DIR/bin/python3" "$BUILD_DIR/bin/python"
+	ln -s "$BUILD_DIR/bin/pip3" "$BUILD_DIR/bin/pip"
 
 	# pip install some needed python packages
 	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
