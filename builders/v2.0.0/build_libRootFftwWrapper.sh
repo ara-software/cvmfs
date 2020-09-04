@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="libRootFftwWrapper"
-DOWNLOAD_LINK="https://github.com/nichol77/libRootFftwWrapper/archive/master.tar.gz"
+DOWNLOAD_LINK="https://github.com/nichol77/libRootFftwWrapper/archive/aeb8f88c8154e65706ef60d74c96b5a596e992fb.tar.gz"
 PACKAGE_DIR_NAME="libRootFftwWrapper"
 
 
