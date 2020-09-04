@@ -25,7 +25,13 @@ This version is intended to represent the latest versions of all ARA software. I
 
 ## Contents
 
-This directory initially only contains the a setup script `setup.sh`. However, this will be the destination for the trunk version of the ARA software on CVMFS. At that point it will contain `source`, `build`, and other relevant directories.
+This directory initially only contains static files which aren't build-dependent. However, this will be the destination for the trunk version of the ARA software on CVMFS. At that point it should contain the following:
+
+* setup.sh - A setup script which can be run to set all necessary paths to use this version of the software
+* source - A directory containing the source files of all packages listed above
+* ara\_build - A directory containing the compiled files of ARA-specific software
+* root\_build - A directory containing the compiled files of ROOT alone
+* misc\_build - A directory containing the compiled files of all other packages
 
 ## Setup script
 
