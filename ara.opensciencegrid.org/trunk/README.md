@@ -8,4 +8,4 @@ This directory initially only contains the a setup script `setup.sh`. However, t
 
 ## Setup script
 
-The `setup.sh` script is designed to be `source`d by users of the ARA software to set the appropriate paths and other environment variables for working with the ARA software. Users of the trunk version should run `source /cvmfs/ara.opensciencegrid.org/trunk/setup.sh` when setting up their environment.
+The `setup.sh` script is designed to be `source`d by users of the ARA software to set the appropriate paths and other environment variables for working with the ARA software. Users of this version should run `source /cvmfs/ara.opensciencegrid.org/trunk/$OS/setup.sh` when setting up their environment, replacing `$OS` with their operating system.
