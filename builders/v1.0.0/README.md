@@ -1,4 +1,4 @@
-# builders/trunk
+# builders/v1.0.0
 
 Build scripts for version 1.0.0 of the ARA software.
 
@@ -17,8 +17,8 @@ This version of the ARA software is intended to match the software used for the 
 | Boost              | 1.49.0           |
 | ROOT               | 5.34.34          |
 | LibRootFFTWWrapper | 1.10             |
-| AraRoot            | master           |
-| AraSim             | a23\_4yr\_diffuse  |
+| AraRoot            | 187d953          |
+| AraSim             | d5788f4          |
 
 ## How to build software
 

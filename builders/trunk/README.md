@@ -2,6 +2,27 @@
 
 Build scripts for the trunk version of the ARA software.
 
+## Version information
+
+This version is intended to represent the latest versions of all ARA software. It should also have the latest versions of dependencies where reasonable.
+
+### Package versions
+
+| Package            | Version/Commit   |
+| ------------------ | ---------------- |
+| CMake              | 3.18.2           |
+| FFTW               | 3.3.8            |
+| GSL                | 2.6              |
+| SQLite             | 3330000          |
+| Boost              | 1.74.0           |
+| ROOT               | 6.22.02          |
+| Python             | 3.8.5            |
+| LibRootFFTWWrapper | master           |
+| AraRoot            | master           |
+| AraSim             | master           |
+| libnuphase         | master           |
+| nuphaseroot        | master           |
+
 ## How to build software
 
 To build the entire ARA software stack, run `build.sh --dest DESTINATION_DIRECTORY` where `DESTINATION_DIRECTORY` is the directory where all the source and build files will be kept. There are additional options than can be passed to the script for more detailed installation:

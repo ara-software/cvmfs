@@ -1,6 +1,24 @@
-# builders/trunk
+# builders/v2.0.0
 
 Build scripts for the trunk version of the ARA software.
+
+## Version information
+
+This version of the ARA software was frozen in Aug 2020 before we added python3 to the cvmfs installation. Therefore, it has ROOT6, but does not support pyroot.
+
+### Package versions
+
+| Package            | Version/Commit   |
+| ------------------ | ---------------- |
+| CMake              | 3.13.4           |
+| FFTW               | 3.3.8            |
+| GSL                | 2.5              |
+| SQLite             | 3270200          |
+| Boost              | 1.55.0           |
+| ROOT               | 6.16.00          |
+| LibRootFFTWWrapper | aeb8f88          |
+| AraRoot            | 187d953          |
+| AraSim             | 4108ec3          |
 
 ## How to build software
 
@@ -15,7 +33,3 @@ To build the entire ARA software stack, run `build.sh --dest DESTINATION_DIRECTO
 
 The `build.sh` script calls each of the individual `build_PROJECT.sh` scripts in the appropriate order. If for some reason you need to install just one of the projects, that should be possible using its respective build script in a fashion similar to `build.sh`. For more details you'll have to dig into the scripts.
 
-
-## Changing dependency versions
-
-If the versions of dependencies for the ARA software change, it may be necessary to change the download link for the changed package. In that case it should hopefully be sufficient to change the `DOWNLOAD_LINK` variable at the top of the project's individual build script. You may also wish to change `PROJECT_DIR_NAME` to change the name of the directory that the project's source files will be stored to, especially if there is indication of a version number in the directory name.
