@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build script for python3
+# Build script for python3 using miniconda
 
 # Set script parameters
 PACKAGE_NAME="miniconda"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build script for AraRoot
+# Build script for nuphaseroot
 
 # Set script parameters
 PACKAGE_NAME="nuphaseroot"

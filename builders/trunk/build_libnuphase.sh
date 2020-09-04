@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build script for AraRoot
+# Build script for libnuphase
 
 # Set script parameters
 PACKAGE_NAME="libnuphase"

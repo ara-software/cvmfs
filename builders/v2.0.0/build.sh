@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build script for trunk version of ARA software
+# Build script for version 2.0.0 of ARA software
 
 
 usage() {
