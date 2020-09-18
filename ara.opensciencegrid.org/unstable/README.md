@@ -20,7 +20,7 @@ This version is intended to represent the latest versions of all ARA software. I
 | ROOT               | 6.22.02          |
 | Python             | 3.8.5            |
 | LibRootFFTWWrapper | master           |
-| AraRoot            | master           |
+| AraRoot            | A5\_calib        |
 | AraSim             | master           |
 | libnuphase         | master           |
 | nuphaseroot        | master           |
