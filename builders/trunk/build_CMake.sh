@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="CMake"
-DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.4.tar.gz"
+DOWNLOAD_LINK="https://github.com/Kitware/CMake/releases/download/v3.19.4/cmake-3.19.4.tar.gz"
 PACKAGE_DIR_NAME="cmake-3.19.4"
 
 
