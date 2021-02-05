@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="SQLite"
-DOWNLOAD_LINK="https://www.sqlite.org/2020/sqlite-autoconf-3330000.tar.gz"
-PACKAGE_DIR_NAME="sqlite-autoconf-3330000"
+DOWNLOAD_LINK="https://www.sqlite.org/2021/sqlite-autoconf-3340100.tar.gz"
+PACKAGE_DIR_NAME="sqlite-autoconf-3340100"
 
 
 usage() {
