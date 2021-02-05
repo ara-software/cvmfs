@@ -10,10 +10,10 @@ This version is intended to represent the latest versions of all ARA software. I
 
 | Package            | Version/Commit   |
 | ------------------ | ---------------- |
-| CMake              | 3.19.2           |
+| CMake              | 3.19.4           |
 | FFTW               | 3.3.9            |
 | GSL                | 2.6              |
-| SQLite             | 3340000          |
+| SQLite             | 3340100          |
 | Boost              | 1.75.0           |
 | ROOT               | 6.22.06          |
 | Python             | 3.9.1            |
