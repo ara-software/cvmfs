@@ -1,6 +1,6 @@
 # builders/v2.0.0
 
-Build scripts for the trunk version of the ARA software.
+Build scripts for version 2.0.0 of the ARA software.
 
 ## Version information
 
