@@ -1,24 +1,40 @@
-# builders/v2.0.0
+# builders/v3.0.0
 
-Build scripts for version 2.0.0 of the ARA software.
+Build scripts for version 3.0.0 of the ARA software.
 
 ## Version information
 
-This version of the ARA software was frozen in Aug 2020 before we added python3 to the cvmfs installation. Therefore, it has ROOT6, but does not support pyroot.
+This version of the ARA software was frozen in March 2021, representing the software stack as it was in January/February 2021.
 
 ### Package versions
 
 | Package            | Version/Commit   |
 | ------------------ | ---------------- |
-| CMake              | 3.13.4           |
-| FFTW               | 3.3.8            |
-| GSL                | 2.5              |
-| SQLite             | 3270200          |
-| Boost              | 1.55.0           |
-| ROOT               | 6.16.00          |
-| LibRootFFTWWrapper | aeb8f88          |
-| AraRoot            | 187d953          |
-| AraSim             | 4108ec3          |
+| CMake              | 3.19.4           |
+| FFTW               | 3.3.9            |
+| GSL                | 2.6              |
+| SQLite             | 3340100          |
+| Boost              | 1.75.0           |
+| ROOT               | 6.22.06          |
+| Python             | 3.8.5            |
+| LibRootFFTWWrapper | 24c667c          |
+| AraRoot            | ad39c3d          |
+| AraSim             | 99f2667          |
+| libnuphase         | 23d6615          |
+| nuphaseroot        | fa14899          |
+
+### Python packages
+
+The Python installation includes the following packages (along with any dependencies thereof):
+- gnureadline
+- h5py
+- healpy
+- iminuit
+- matplotlib
+- numpy
+- pandas
+- pynverse
+- scipy
 
 ## How to build software
 
