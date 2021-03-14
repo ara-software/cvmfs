@@ -23,6 +23,19 @@ This version of the ARA software was frozen in March 2021, representing the soft
 | libnuphase         | 23d6615          |
 | nuphaseroot        | fa14899          |
 
+### Python packages
+
+The Python installation includes the following packages (along with any dependencies thereof):
+- gnureadline
+- h5py
+- healpy
+- iminuit
+- matplotlib
+- numpy
+- pandas
+- pynverse
+- scipy
+
 ## Contents
 
 This directory initially only contains static files which aren't build-dependent. However, this will be the destination for the trunk version of the ARA software on CVMFS. At that point it should contain the following:

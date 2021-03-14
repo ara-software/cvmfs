@@ -23,6 +23,19 @@ This version of the ARA software was frozen in March 2021, representing the soft
 | libnuphase         | 23d6615          |
 | nuphaseroot        | fa14899          |
 
+### Python packages
+
+The Python installation includes the following packages (along with any dependencies thereof):
+- gnureadline
+- h5py
+- healpy
+- iminuit
+- matplotlib
+- numpy
+- pandas
+- pynverse
+- scipy
+
 ## How to build software
 
 To build the entire ARA software stack, run `build.sh --dest DESTINATION_DIRECTORY` where `DESTINATION_DIRECTORY` is the directory where all the source and build files will be kept. There are additional options than can be passed to the script for more detailed installation:
