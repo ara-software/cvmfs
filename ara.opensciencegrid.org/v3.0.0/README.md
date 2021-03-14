@@ -1,10 +1,10 @@
-# ara.opensciencegrid.org/trunk
+# ara.opensciencegrid.org/v3.0.0
 
-Static files for the trunk version of ARA software.
+Static files for version 3.0.0 of the ARA software.
 
 ## Version information
 
-This version is intended to represent the latest versions of all ARA software. It should also have the latest versions of dependencies where reasonable.
+This version of the ARA software was frozen in March 2021, representing the software stack as it was in January/February 2021.
 
 ### Package versions
 
@@ -16,12 +16,12 @@ This version is intended to represent the latest versions of all ARA software. I
 | SQLite             | 3340100          |
 | Boost              | 1.75.0           |
 | ROOT               | 6.22.06          |
-| Python             | 3.9.1            |
-| LibRootFFTWWrapper | master           |
-| AraRoot            | master           |
-| AraSim             | master           |
-| libnuphase         | master           |
-| nuphaseroot        | master           |
+| Python             | 3.8.5            |
+| LibRootFFTWWrapper | 24c667c          |
+| AraRoot            | ad39c3d          |
+| AraSim             | 99f2667          |
+| libnuphase         | 23d6615          |
+| nuphaseroot        | fa14899          |
 
 ## Contents
 
