@@ -139,8 +139,8 @@ if [ $SKIP_BUILD = false ]; then
 	sed -i 's:^find_package(FFTW REQUIRED):#find_package(FFTW REQUIRED)\
 set(FFTW_LIBRARIES "$ENV{FFTWSYS}/lib/libfftw3.so.3.6.9")\
 set(FFTW_INCLUDES "$ENV{FFTWSYS}/include"):' CMakeLists.txt
-	sed -i 's:@ccmake:@cmake:' Makefile
-	make configure "$MAKE_ARG" || exit 31
+	# sed -i 's:@ccmake:@cmake:' Makefile
+	# make configure "$MAKE_ARG" || exit 31
 	echo "Installing $PACKAGE_NAME"
 	make "$MAKE_ARG" || exit 32
 	make install "$MAKE_ARG" || exit 33
