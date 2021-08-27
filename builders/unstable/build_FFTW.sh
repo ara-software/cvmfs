@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="FFTW"
-DOWNLOAD_LINK="http://www.fftw.org/fftw-3.3.8.tar.gz"
-PACKAGE_DIR_NAME="fftw-3.3.8"
+DOWNLOAD_LINK="http://www.fftw.org/fftw-3.3.9.tar.gz"
+PACKAGE_DIR_NAME="fftw-3.3.9"
 
 
 usage() {

@@ -3,8 +3,8 @@
 
 # Set script parameters
 PACKAGE_NAME="python3"
-DOWNLOAD_LINK="https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tgz"
-PACKAGE_DIR_NAME="py3.8.5"
+DOWNLOAD_LINK="https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tgz"
+PACKAGE_DIR_NAME="py3.9.1"
 
 
 usage() {
@@ -111,7 +111,7 @@ if [ $SKIP_BUILD = false ]; then
 
 	# pip install some needed python packages
 	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
-	$BUILD_DIR/bin/pip3 install gnureadline h5py iminuit matplotlib numpy pandas pynverse scipy || exit 34
+	$BUILD_DIR/bin/pip3 install gnureadline h5py healpy iminuit matplotlib numpy pandas pynverse scipy || exit 34
 fi
 
 # Clean up source directory if requested

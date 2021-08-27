@@ -1,8 +1,6 @@
-# builders/unstable
+# builders/trunk
 
-Build scripts for the unstable version of the ARA software.
-
-> **WARNING**: This version is intended as a test space for developing new CVMFS builds. You should really only use it if you're testing a new version for CVMFS! If you're looking for the bleeding-edge software stack you should use the trunk version instead.
+Build scripts for the trunk version of the ARA software.
 
 ## Version information
 
@@ -12,13 +10,13 @@ This version is intended to represent the latest versions of all ARA software. I
 
 | Package            | Version/Commit      |
 | ------------------ | ----------------    |
-| CMake              | 3.18.2              |
-| FFTW               | 3.3.8               |
+| CMake              | 3.19.4              |
+| FFTW               | 3.3.9               |
 | GSL                | 2.6                 |
-| SQLite             | 3330000             |
-| Boost              | 1.74.0              |
-| ROOT               | 6.22.02             |
-| Python             | 3.8.5               |
+| SQLite             | 3340100             |
+| Boost              | 1.75.0              |
+| ROOT               | 6.22.06             |
+| Python             | 3.9.1               |
 | LibRootFFTWWrapper | master              |
 | AraRoot            | add\_rt\_correlator |
 | AraSim             | master              |

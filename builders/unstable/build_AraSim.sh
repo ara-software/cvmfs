@@ -138,8 +138,6 @@ if [ $SKIP_BUILD = false ]; then
 	# cp AraSim "${BUILD_DIR%/}/bin/AraSim" # (Removed since AraSim can't be run from outside the source directory)
 	cp libAra.so "${BUILD_DIR%/}/lib/libAra.so"
 	cp eventSimDict_rdict.pcm "${BUILD_DIR%/}/lib/eventSimDict_rdict.pcm"
-	make "$MAKE_ARG" -f M.readTree || exit 32
-	make "$MAKE_ARG" -f M.readGeom || exit 33
 fi
 
 # Clean up source directory if requested
