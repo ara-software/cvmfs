@@ -10,20 +10,20 @@ This version is intended to represent the latest versions of all ARA software. I
 
 ### Package versions
 
-| Package            | Version/Commit   |
-| ------------------ | ---------------- |
-| CMake              | 3.18.2           |
-| FFTW               | 3.3.8            |
-| GSL                | 2.6              |
-| SQLite             | 3330000          |
-| Boost              | 1.74.0           |
-| ROOT               | 6.22.02          |
-| Python             | 3.8.5            |
-| LibRootFFTWWrapper | master           |
-| AraRoot            | A5\_calib        |
-| AraSim             | master           |
-| libnuphase         | master           |
-| nuphaseroot        | master           |
+| Package            | Version/Commit      |
+| ------------------ | ----------------    |
+| CMake              | 3.18.2              |
+| FFTW               | 3.3.8               |
+| GSL                | 2.6                 |
+| SQLite             | 3330000             |
+| Boost              | 1.74.0              |
+| ROOT               | 6.22.02             |
+| Python             | 3.8.5               |
+| LibRootFFTWWrapper | master              |
+| AraRoot            | add\_rt\_correlator |
+| AraSim             | master              |
+| libnuphase         | master              |
+| nuphaseroot        | master              |
 
 ## How to build software
 
