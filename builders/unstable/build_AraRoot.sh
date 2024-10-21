@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="AraRoot"
-DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/add_rt_correlator.tar.gz"
+DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/master.tar.gz"
 PACKAGE_DIR_NAME="AraRoot"
 
 
