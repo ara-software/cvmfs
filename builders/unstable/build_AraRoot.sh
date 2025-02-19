@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="AraRoot"
-DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/master.tar.gz"
+DOWNLOAD_LINK="https://github.com/ara-software/AraRoot/archive/refs/heads/polRecoFreeze.tar.gz"
 PACKAGE_DIR_NAME="AraRoot"
 
 
