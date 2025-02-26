@@ -12,7 +12,7 @@ updated to v2, which includes the multitriggers update.
 | Package            | Version/Commit   |
 | ------------------ | ---------------- |
 | CMake              | 3.19.4           |
-| FFTW               | 3.3.9            |s
+| FFTW               | 3.3.9            |
 | GSL                | 2.6              |
 | SQLite             | 3340100          |
 | Boost              | 1.75.0           |
