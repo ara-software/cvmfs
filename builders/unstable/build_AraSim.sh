@@ -3,7 +3,7 @@
 
 # Set script parameters
 PACKAGE_NAME="AraSim"
-DOWNLOAD_LINK="https://github.com/ara-software/AraSim/archive/master.tar.gz"
+DOWNLOAD_LINK="https://github.com/ara-software/AraSim.git"
 PACKAGE_DIR_NAME="AraSim"
 
 
@@ -111,11 +111,7 @@ fi
 cd "$SOURCE_DIR"
 if [ $SKIP_DOWNLOAD = false ]; then
 	echo "Downloading $PACKAGE_NAME to $SOURCE_DIR"
-	wget "$DOWNLOAD_LINK" -O "$PACKAGE_DIR_NAME.tar.gz" || exit 11
-	echo "Extracting $PACKAGE_NAME"
-	mkdir "$PACKAGE_DIR_NAME"
-	tar -xzf "$PACKAGE_DIR_NAME.tar.gz" -C "$PACKAGE_DIR_NAME" --strip-components=1 || exit 12
-	rm "$PACKAGE_DIR_NAME.tar.gz"
+	git clone "$DOWNLOAD_LINK" --depth 1 || exit 11
 fi
 
 # Set required environment variables
