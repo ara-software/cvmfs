@@ -15,7 +15,7 @@ This version is intended to represent the latest versions of all ARA software. I
 | GSL                | 2.6              |
 | SQLite             | 3340100          |
 | Boost              | 1.75.0           |
-| ROOT               | 6.22.06          |
+| ROOT               | 6.26.14          |
 | Python             | 3.9.1            |
 | LibRootFFTWWrapper | master           |
 | AraRoot            | master           |
