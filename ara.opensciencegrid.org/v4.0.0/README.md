@@ -1,4 +1,4 @@
-# ara.opensciencegrid.org/v3.0.0
+# ara.opensciencegrid.org/v4.0.0
 
 Static files for version 4.0.0 of the ARA software.
 
