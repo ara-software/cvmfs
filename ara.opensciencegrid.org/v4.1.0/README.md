@@ -1,11 +1,12 @@
-# ara.opensciencegrid.org/v4.0.0
+# ara.opensciencegrid.org/v4.1.0
 
-Static files for version 4.0.0 of the ARA software.
+Static files for version 4.1.0 of the ARA software.
 
 ## Version information
 
-This version is a snapshot of the ARA Software in Febuary 2025 before AraSim was 
-updated to v2, which includes the multitriggers update. 
+This version is a snapshot of the ARA Software in October 2025 that saves the
+ARA Software Stack built on Centos7 and Centos8 in anticipation of the WIPAC
+computing cluster upgrading from Centos7 to Centos9.
 
 ### Package versions
 
@@ -18,11 +19,11 @@ updated to v2, which includes the multitriggers update.
 | Boost              | 1.75.0           |
 | ROOT               | 6.22.06          |
 | Python             | 3.9.1            |
-| LibRootFFTWWrapper | ec7a87           |
-| AraRoot            | 5e510a           |
-| AraSim             | 1.99             |
-| libnuphase         | 23d661           |
-| nuphaseroot        | fa3de5           |
+| LibRootFFTWWrapper | ec7a876          |
+| AraRoot            | b41b3e0          |
+| AraSim             | 787804d          |
+| libnuphase         | 23d6615          |
+| nuphaseroot        | fa3de5f          |
 
 ### Python packages
 
