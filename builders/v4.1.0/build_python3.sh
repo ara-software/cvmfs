@@ -111,7 +111,7 @@ if [ $SKIP_BUILD = false ]; then
 
 	# pip install some needed python packages
 	export LD_LIBRARY_PATH="$BUILD_DIR/lib"
-	$BUILD_DIR/bin/pip3 install gnureadline h5py healpy iminuit matplotlib numpy pandas pynverse scipy || exit 34
+	$BUILD_DIR/bin/pip3 install gnureadline==8.2.13 h5py==3.14.0 healpy==1.17.3 iminuit==2.31.1 matplotlib==3.9.4 numpy==1.26.4 pandas==2.3.2 pynverse==0.1.4.6 scipy==1.13.1 || exit 34
 fi
 
 # Clean up source directory if requested
